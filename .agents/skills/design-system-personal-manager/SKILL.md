@@ -1,9 +1,9 @@
 ---
-name: design-system-notes
+name: design-system-personal-manager
 description: Procesa y organiza notas raw de sistemas de diseño sin inventar ni eliminar información. Gestiona changelog acumulativo, reportes diarios por área, registro de deuda técnica, especificaciones de componentes, borradores para Storybook, reorganización limpia de notas y mensajes de actualización con tono de marca. Usar cuando el usuario mencione notas raw, changelog, reporte diario, deuda técnica de UI, especificaciones de componentes, Storybook o guías de marca de un sistema de diseño.
 ---
 
-# Design System Notes — Skill de Gestión de Notas
+# Design System Personal Manager — Skill de Gestión de Notas
 
 Esta skill estandariza el flujo de trabajo para transformar notas desestructuradas y apuntes diarios (*raw*) en documentación formal, changelog, control de deuda y especificaciones de componentes para un sistema de diseño profesional.
 

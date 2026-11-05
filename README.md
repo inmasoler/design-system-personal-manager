@@ -18,7 +18,7 @@
 ```text
 ├── .agents/
 │   └── skills/
-│       └── design-system-notes/
+│       └── design-system-personal-manager/
 │           ├── SKILL.md             # Instrucciones maestras del agente y definición de comandos
 │           ├── reference.md         # Plantillas exactas para cada documento
 │           └── examples.md          # Casos prácticos de notas sin formato y salidas esperadas
