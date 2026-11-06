@@ -1,6 +1,6 @@
 # Design System Personal Manager
 
-> Skill portátil basada en el estándar abierto [Agent Skills](https://agentskills.io) para transformar notas *raw* y apuntes desestructurados de un sistema de diseño en documentación viva, changelog acumulativo, control de deuda técnica y especificaciones de componentes sin inventar información.
+> Skill portátil basada en el estándar abierto [Agent Skills](https://agentskills.io) para transformar notas *raw* y apuntes desestructurados de un sistema de diseño en documentación viva, changelog acumulativo, control de deuda técnica, una spec fiel por componente y la guía publicada de ese componente, sin inventar información.
 
 ---
 
@@ -26,9 +26,11 @@
 ├── docs/
 │   └── sistema-diseno/
 │       ├── raw/                     # Notas diarias originales (SOLO LECTURA)
-│       ├── ordenado/                # Salidas del comando 'reorganizar'
+│       ├── ordenado/                # Notas limpias y spec fiel por componente
+│       │   ├── <nota>-ordenado.md   # Salida de 'reorganizar'
+│       │   └── specs/<slug>.md      # Acopio fiel de 'actualizar-spec'
 │       ├── clasificado/             # Salidas del comando 'clasificar'
-│       ├── componentes/             # Especificaciones vivas por componente (<slug>.md)
+│       ├── componentes/             # Guía publicada del componente (<slug>.md)
 │       ├── reportes/                # Reportes diarios agrupados por área (YYYY-MM-DD.md)
 │       ├── storybook/               # Contexto y argTypes para Storybook Docs
 │       ├── marca/
@@ -53,8 +55,9 @@ Ejecuta cualquiera de estos comandos directamente en el chat con tu agente:
 | `reorganizar` | Limpia y estructura una nota raw caótica | Crea un nuevo archivo en `docs/sistema-diseno/ordenado/`. |
 | `update-changelog` | Clasifica cambios del día por tipo y genera reporte diario por área | Actualiza `changelog.md` y crea `reportes/YYYY-MM-DD.md`. |
 | `update-deuda` | Centraliza problemas, fallos y dudas en el registro de deuda | Añade ítems a `docs/sistema-diseno/deuda.md`. |
-| `actualizar-spec` | Genera o actualiza la spec técnica de un componente (11 secciones) | Escribe en `docs/sistema-diseno/componentes/<slug>.md`. |
-| `preparar-storybook` | Prepara `argTypes`, variantes y snippets `.stories.tsx` | Escribe en `docs/sistema-diseno/storybook/<slug>.md`. |
+| `actualizar-spec` | Junta en una spec fiel todo lo que las notas dicen de un componente | Escribe en `docs/sistema-diseno/ordenado/specs/<slug>.md`. |
+| `escribir-guia` | Redacta la guía publicada del componente, en español, solo con lo que consta en la spec | Escribe en `docs/sistema-diseno/componentes/<slug>.md`. |
+| `preparar-storybook` | Prepara `argTypes`, variantes y fragmentos `.stories.tsx` | Escribe en `docs/sistema-diseno/storybook/<slug>.md`. |
 | `generar-mensaje` | Redacta un mensaje resumen con tono de marca para el equipo | **En el chat** (listo para copiar y pegar en Slack/Teams). |
 | `incluir-marca` | Ingiere una guía de estilo y extrae directrices de tono y glosario | Guarda fuente en `marca/fuente/` y crea `marca/voz.md`. |
 | `clasificar` | Separa notas raw muy complejas en temáticas independientes | Crea archivos nuevos en `docs/sistema-diseno/clasificado/`. |
@@ -67,7 +70,7 @@ Ejecuta cualquiera de estos comandos directamente en el chat con tu agente:
 2. **Fecha:** Pídele al agente: `renombrar-raw`.
 3. **Consolida:** Pídele al agente: `update-changelog` y `update-deuda`.
 4. **Comunica:** Pídele al agente: `generar-mensaje` para avisar al equipo en Slack o Teams.
-5. **Especifica:** Cuando definas componentes, pide `actualizar-spec [componente]` y luego `preparar-storybook [componente]`.
+5. **Documenta el componente:** Pide `actualizar-spec [componente]`, después `escribir-guia [componente]` y, cuando toque el sample, `preparar-storybook [componente]`.
 
 ---
 
