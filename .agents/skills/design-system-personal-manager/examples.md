@@ -158,75 +158,161 @@ Se incorporó la variante ghost al componente Button y se ajustó el espaciado t
 
 ## 5. Resultado del Comando `actualizar-spec` (Button)
 
-**Archivo actualizado/creado en `docs/sistema-diseno/componentes/button.md`:**  
-*(Nótese la estricta presencia de `No consta en las notas raw` en los campos no documentados).*
+**Archivo actualizado/creado en `docs/sistema-diseno/ordenado/specs/button.md`:**  
+*(Acopio fiel. Los campos no documentados quedan como `No consta en las notas raw`. No se escribe en `componentes/`.)*
 
 ```markdown
-# Componente: Button
+# Spec: Button
 
 - **Slug:** `button`
 - **Estado de la spec:** En revisión
 - **Última actualización:** 2026-10-23 por @autor
+- **Fuentes:** `docs/sistema-diseno/raw/apuntes-sesion.md`
 
 ---
 
-## 1. Descripción y Propósito
+## 1. Descripción y propósito
 Elemento interactivo para desencadenar acciones. Se añade variante ghost orientada a barras de herramientas.
 
-## 2. Cuándo usar y Cuándo no usar
-- **Usar cuando:** Barras de herramientas (variante ghost). Otros casos: No consta en las notas raw.
+## 2. Cuándo usar y cuándo no usar
+- **Usar cuando:** Barras de herramientas (variante ghost).
 - **No usar cuando:** No consta en las notas raw.
 
 ## 3. Anatomía
-Texto y posible icono a la derecha (según notas). Resto de la anatomía: No consta en las notas raw.
+Texto y posible icono a la derecha. Resto de la anatomía: No consta en las notas raw.
 
-## 4. Variantes
-| Variante | Descripción | Valores válidos |
+## 4. Variantes y opciones
+| Variante u opción | Descripción | Valores válidos |
 | :--- | :--- | :--- |
 | ghost | Para barras de herramientas | No consta en las notas raw |
 | sm | Tamaño pequeño con padding táctil de 12px | No consta en las notas raw |
 
 ## 5. Estados
-- **Default / Reposo:** Texto en `neutral-900` para variante ghost.
+- **Reposo:** Texto en `neutral-900` para variante ghost.
 - **Hover:** Fondo `neutral-100` para variante ghost.
-- **Focus:** Reportado bug de foco cortado en Safari con icono derecho.
-- **Active / Pressed:** No consta en las notas raw.
-- **Disabled:** No consta en las notas raw.
-- **Loading:** No consta en las notas raw.
+- **Foco:** El anillo de foco se ve cortado en Safari cuando el icono va a la derecha.
+- **Pulsado:** No consta en las notas raw.
+- **Deshabilitado:** No consta en las notas raw.
+- **Cargando:** No consta en las notas raw.
 - **Error:** No consta en las notas raw.
 
-## 6. Propiedades / API
+## 6. Propiedades
 | Propiedad | Tipo | Obligatoria | Valor por defecto | Descripción |
 | :--- | :--- | :--- | :--- | :--- |
-| variant | string | No consta | No consta | Incluye variante 'ghost' |
-| size | string | No consta | No consta | Incluye tamaño 'sm' |
+| variant | string | No consta | No consta | Incluye la variante ghost |
+| size | string | No consta | No consta | Incluye el tamaño sm |
 | aria-pressed | boolean | No consta | No consta | En evaluación para botones toggle |
 
-## 7. Tokens Asociados
+## 7. Slots
+| Slot | Descripción |
+| :--- | :--- |
+| No consta en las notas raw | No consta en las notas raw |
+
+## 8. Estilos y tokens
 - **Color:** `neutral-900` (texto ghost), `neutral-100` (hover ghost).
-- **Espaciado / Padding:** `12px` horizontal para tamaño `sm`.
+- **Espaciado:** `12px` horizontal para el tamaño `sm`.
 - **Tipografía:** No consta en las notas raw.
-- **Borde / Radio:** No consta en las notas raw.
-- **Sombra / Elevación:** No consta en las notas raw.
+- **Borde y radio:** No consta en las notas raw.
+- **Sombra y elevación:** No consta en las notas raw.
 
-## 8. Accesibilidad (a11y)
-- **Rol ARIA:** Posible evaluación de `aria-pressed`.
-- **Navegación por teclado:** Bug en focus ring de Safari.
-- **Contraste mínimo:** No consta en las notas raw.
+## 9. Eventos
+| Evento | Cuándo se emite |
+| :--- | :--- |
+| No consta en las notas raw | No consta en las notas raw |
 
-## 9. Comportamiento e Interacciones
+## 10. Métodos
+| Método | Descripción |
+| :--- | :--- |
+| No consta en las notas raw | No consta en las notas raw |
+
+## 11. Accesibilidad
+- **Rol:** Posible evaluación de `aria-pressed`.
+- **Teclado:** Bug en el anillo de foco de Safari.
+- **Contraste:** No consta en las notas raw.
+
+## 12. Comportamiento
 No consta en las notas raw.
 
-## 10. Decisiones de Diseño y Contexto
-- Aumento de padding de 8px a 12px en `sm` para garantizar el área táctil mínima de interacción.
+## 13. Buenas prácticas
+- **Hacer:** No consta en las notas raw.
+- **Evitar:** No consta en las notas raw.
 
-## 11. Información Pendiente / Resto
-- Confirmar comportamiento del focus ring en navegadores distintos a Safari.
+## 14. Decisiones
+- El padding de `sm` pasa de 8px a 12px para garantizar el área táctil mínima.
+
+## 15. Información pendiente / resto
+- Confirmar el anillo de foco en navegadores distintos de Safari.
 ```
 
 ---
 
-## 6. Resultado del Comando `generar-mensaje`
+## 6. Resultado del Comando `escribir-guia` (Button)
+
+**Archivo creado en `docs/sistema-diseno/componentes/button.md`:**  
+*(Solo lo que la spec tiene. Los huecos no se repiten dentro de cada sección.)*
+
+```markdown
+# Button
+
+Elemento interactivo para desencadenar acciones. La variante ghost está orientada a barras de herramientas.
+
+- **Slug:** `button`
+- **Estado:** En revisión
+- **Última actualización:** 2026-10-23 por @autor
+- **Fuente:** `docs/sistema-diseno/ordenado/specs/button.md`
+
+## Descripción general
+Elemento interactivo para desencadenar acciones. Incluye la variante ghost, pensada para barras de herramientas.
+
+## Uso
+- **Usar cuando:** la acción vive en una barra de herramientas y se usa la variante ghost.
+
+## Anatomía
+Texto y, si consta en el caso, un icono a la derecha.
+
+## Opciones
+| Variante u opción | Descripción | Valores |
+| :--- | :--- | :--- |
+| ghost | Para barras de herramientas | |
+| sm | Tamaño pequeño. Padding horizontal de 12px. | |
+
+## Comportamiento
+- **Reposo:** en la variante ghost, el texto usa `neutral-900`.
+- **Hover:** en la variante ghost, el fondo usa `neutral-100`.
+- **Foco:** en Safari, el anillo de foco se ve cortado cuando el icono va a la derecha.
+
+## Accesibilidad
+- **Rol:** `aria-pressed` está en evaluación para el botón toggle.
+- **Teclado:** el anillo de foco falla en Safari en botones con icono a la derecha.
+
+## Referencia de API
+
+### Propiedades
+| Propiedad | Tipo | Obligatoria | Valor por defecto | Descripción |
+| :--- | :--- | :--- | :--- | :--- |
+| variant | string | | | Incluye la variante ghost |
+| size | string | | | Incluye el tamaño sm |
+| aria-pressed | boolean | | | En evaluación para botones toggle |
+
+### Estilos y tokens
+- **Color:** `neutral-900` para el texto ghost y `neutral-100` para el fondo en hover.
+- **Espaciado:** 12px de padding horizontal en el tamaño `sm`.
+
+## Decisiones
+El padding horizontal de `sm` pasa de 8px a 12px para cubrir el área táctil mínima.
+
+## Información pendiente
+- Cuándo no usar el componente.
+- Resto de la anatomía, valores cerrados de cada opción y tipo, obligatoriedad y valor por defecto de las propiedades.
+- Estados pulsado, deshabilitado, cargando y error.
+- Slots, eventos, métodos, tipografía, borde, sombra y contraste.
+- Buenas prácticas de hacer y evitar.
+- Comportamiento del anillo de foco fuera de Safari.
+```
+
+---
+
+## 7. Resultado del Comando `generar-mensaje`
 
 **Salida entregada en el chat (sin escribir archivo en disco):**
 

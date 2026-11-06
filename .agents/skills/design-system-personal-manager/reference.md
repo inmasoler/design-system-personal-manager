@@ -6,7 +6,7 @@ Este archivo define la estructura exacta que deben seguir todos los documentos g
 
 ## Reglas Generales de Aplicación
 
-1. **Fidelidad Absoluta**: Nunca inventar valores, propiedades, tokens, decisiones ni datos ficticios. Si un campo de una plantilla no aparece en las notas raw, debe indicarse explícitamente como `No consta en las notas raw`.
+1. **Fidelidad Absoluta**: Nunca inventar valores, propiedades, tokens, decisiones ni datos ficticios. En la spec fiel (`ordenado/specs/`), si un campo no aparece en las notas raw, debe indicarse explícitamente como `No consta en las notas raw`. En la guía publicada (`componentes/`), no se escribe ese marcador dentro de la sección: el apartado se omite y el hueco se resume en **Información pendiente**.
 2. **Omisión de Secciones Vacías**: En el **Reporte Diario** y en el **Changelog**, una sección SOLO se incluye si ese día existen notas correspondientes a esa área o tipo de cambio. No dejar secciones vacías.
 3. **Gestión de Restos**: Todo fragmento de información que no encaje de forma clara en las secciones predefinidas debe colocarse en un apartado final de **Resto / Sin clasificar**. Al finalizar el comando, el agente debe señalarlo explícitamente y preguntar al usuario dónde desea clasificarlo.
 4. **Voz de Marca**: Si existe `docs/sistema-diseno/marca/voz.md`, se aplican sus directrices a títulos, conectores y mensajes sin alterar la veracidad del contenido técnico. Si no existe, se emplea un tono profesional, claro y neutro.
@@ -136,131 +136,240 @@ Este documento consolida la deuda técnica, inconsistencias y tareas pendientes 
 
 ---
 
-## 4. Plantilla: Especificación de Componente
+## 4. Plantilla: Spec fiel del componente
 
-**Ruta de destino:** `docs/sistema-diseno/componentes/<slug-componente>.md`  
-**Regla:** El slug se toma exactamente del nombre del componente en minúsculas y guiones (ej. `button-action.md`). Si un campo no está documentado en las notas raw, colocar `No consta en las notas raw`.
+**Ruta de destino:** `docs/sistema-diseno/ordenado/specs/<slug-componente>.md`  
+**Regla:** Este archivo junta, sin redactar para publicación, todo lo que las notas dicen del componente. El slug se toma del nombre en minúsculas y guiones (ej. `button-action.md`). Si un campo no está en las notas raw, colocar `No consta en las notas raw`. No escribir esta spec en `componentes/`.
 
 ```markdown
-# Componente: [Nombre del Componente]
+# Spec: [Nombre del Componente]
 
 - **Slug:** `<slug>`
 - **Estado de la spec:** [Borrador / Estable / En revisión]
 - **Última actualización:** YYYY-MM-DD por @autor
+- **Fuentes:** [Ficheros raw de los que se extrajo]
 
 ---
 
-## 1. Descripción y Propósito
+## 1. Descripción y propósito
 [Finalidad del componente según las notas. Si no consta: "No consta en las notas raw."]
 
-## 2. Cuándo usar y Cuándo no usar
+## 2. Cuándo usar y cuándo no usar
 - **Usar cuando:** [Casos de uso mencionados o "No consta"]
 - **No usar cuando:** [Casos no recomendados o "No consta"]
 
 ## 3. Anatomía
 [Elementos visuales que conforman el componente: icono, etiqueta, contenedor, etc.]
 
-## 4. Variantes
-| Variante | Descripción | Valores válidos |
+## 4. Variantes y opciones
+| Variante u opción | Descripción | Valores válidos |
 | :--- | :--- | :--- |
 | [Nombre] | [Detalle o "No consta"] | [Valores o "No consta"] |
 
 ## 5. Estados
-- **Default / Reposo:** [Comportamiento visual o "No consta"]
+- **Reposo:** [Comportamiento visual o "No consta"]
 - **Hover:** [Detalle o "No consta"]
-- **Focus:** [Detalle o "No consta"]
-- **Active / Pressed:** [Detalle o "No consta"]
-- **Disabled:** [Detalle o "No consta"]
-- **Loading:** [Detalle o "No consta"]
+- **Foco:** [Detalle o "No consta"]
+- **Pulsado:** [Detalle o "No consta"]
+- **Deshabilitado:** [Detalle o "No consta"]
+- **Cargando:** [Detalle o "No consta"]
 - **Error:** [Detalle o "No consta"]
 
-## 6. Propiedades / API
+## 6. Propiedades
 | Propiedad | Tipo | Obligatoria | Valor por defecto | Descripción |
 | :--- | :--- | :--- | :--- | :--- |
 | [prop] | [tipo o "No consta"] | [Sí/No o "No consta"] | [default o "No consta"] | [descripción o "No consta"] |
 
-## 7. Tokens Asociados
+## 7. Slots
+| Slot | Descripción |
+| :--- | :--- |
+| [nombre o "No consta"] | [detalle o "No consta"] |
+
+## 8. Estilos y tokens
 - **Color:** [Tokens de fondo, borde, texto o "No consta"]
-- **Espaciado / Padding:** [Tokens o valores o "No consta"]
+- **Espaciado:** [Tokens o valores o "No consta"]
 - **Tipografía:** [Tokens de fuente, peso, tamaño o "No consta"]
-- **Borde / Radio:** [Tokens o "No consta"]
-- **Sombra / Elevación:** [Tokens o "No consta"]
+- **Borde y radio:** [Tokens o "No consta"]
+- **Sombra y elevación:** [Tokens o "No consta"]
 
-## 8. Accesibilidad (a11y)
-- **Rol ARIA:** [Rol semántico o "No consta"]
-- **Navegación por teclado:** [Interacciones por teclado o "No consta"]
-- **Contraste mínimo:** [Datos de contraste o "No consta"]
+## 9. Eventos
+| Evento | Cuándo se emite |
+| :--- | :--- |
+| [nombre o "No consta"] | [detalle o "No consta"] |
 
-## 9. Comportamiento e Interacciones
-[Comportamiento ante clic, scroll, responsive o animaciones indicadas.]
+## 10. Métodos
+| Método | Descripción |
+| :--- | :--- |
+| [nombre o "No consta"] | [detalle o "No consta"] |
 
-## 10. Decisiones de Diseño y Contexto
-[Razones o acuerdos tomados por el equipo registrados en las notas raw.]
+## 11. Accesibilidad
+- **Rol:** [Rol semántico o "No consta"]
+- **Teclado:** [Tecla y función, o "No consta"]
+- **Contraste:** [Datos de contraste o "No consta"]
 
-## 11. Información Pendiente / Resto
+## 12. Comportamiento
+[Comportamiento ante clic, scroll, responsive o animaciones indicadas, o "No consta".]
+
+## 13. Buenas prácticas
+- **Hacer:** [Práctica recomendada o "No consta"]
+- **Evitar:** [Práctica desaconsejada o "No consta"]
+
+## 14. Decisiones
+[Razones o acuerdos del equipo registrados en las notas raw, o "No consta".]
+
+## 15. Información pendiente / resto
 [Dudas o anotaciones del componente que no encajan en los apartados anteriores.]
 ```
 
 ---
 
-## 5. Plantilla: Borrador para Storybook
+## 5. Plantilla: Guía del componente
 
-**Ruta de destino:** `docs/sistema-diseno/storybook/<slug-componente>.md`  
-**Finalidad:** Proporcionar al desarrollador un contexto ordenado y snippets listos para crear `.stories.tsx` o documentación en Storybook Docs sin tener que revisar notas sueltas.
+**Ruta de destino:** `docs/sistema-diseno/componentes/<slug-componente>.md`  
+**Fuente única:** `docs/sistema-diseno/ordenado/specs/<slug>.md`. Si la spec no existe, no generar la guía.  
+**Idioma:** español. Los títulos de sección se escriben como en esta plantilla.  
+**Regla de lectura:** se redacta como la página de un componente en un design system. Solo entran secciones con datos reales en la spec. Un apartado entero en `No consta en las notas raw` no se publica. Los huecos se resumen al final, sin repetir el marcador dentro del cuerpo.
 
 ```markdown
-# Storybook Docs Context: [Nombre del Componente]
+# [Nombre del componente]
 
-> Este documento contiene el contexto preparado a partir de las notas raw para la integración en Storybook. Los campos marcados como `[No consta en notas]` deben ser validados con el código del componente.
+[Una o dos frases de propósito, copiadas en sentido de la spec. Sin añadir usos que no consten.]
+
+- **Slug:** `<slug>`
+- **Estado:** [El estado de la spec]
+- **Última actualización:** YYYY-MM-DD por @autor
+- **Fuente:** `docs/sistema-diseno/ordenado/specs/<slug>.md`
+
+## Descripción general
+[Qué es y para qué sirve, solo con lo que dice la spec.]
+
+## Uso
+- **Usar cuando:** [Casos que constan]
+- **No usar cuando:** [Casos que constan. Omitir la viñeta si no hay ninguno.]
+
+## Anatomía
+[Partes del componente que constan en la spec.]
+
+## Buenas prácticas
+**Hacer**
+- [Práctica que consta]
+
+**Evitar**
+- [Práctica que consta. Omitir el bloque si no hay ninguna.]
+
+## Opciones
+[Variantes, tamaños y configuración que constan.]
+
+| Variante u opción | Descripción | Valores |
+| :--- | :--- | :--- |
+| [Nombre] | [Detalle] | [Valores, si constan] |
+
+## Comportamiento
+[Estados e interacción que constan. Un estado sin datos no se lista.]
+
+## Accesibilidad
+- **Rol:** [Si consta]
+- **Teclado:**
+
+| Tecla | Función |
+| :--- | :--- |
+| [Tecla] | [Función] |
+
+- **Contraste:** [Si consta]
+
+## Referencia de API
+
+### Propiedades
+| Propiedad | Tipo | Obligatoria | Valor por defecto | Descripción |
+| :--- | :--- | :--- | :--- | :--- |
+| [prop] | [tipo] | [Sí/No] | [default] | [descripción] |
+
+### Slots
+| Slot | Descripción |
+| :--- | :--- |
+| [nombre] | [detalle] |
+
+### Estilos y tokens
+- **Color:** [Tokens que constan]
+- **Espaciado:** [Tokens o valores que constan]
+- **Tipografía:** [Tokens que constan]
+- **Borde y radio:** [Tokens que constan]
+- **Sombra y elevación:** [Tokens que constan]
+
+### Eventos
+| Evento | Cuándo se emite |
+| :--- | :--- |
+| [nombre] | [detalle] |
+
+### Métodos
+| Método | Descripción |
+| :--- | :--- |
+| [nombre] | [detalle] |
+
+## Decisiones
+[Acuerdos de la spec que explican una opción de la guía.]
+
+## Información pendiente
+- [Hueco de la spec que un lector de la guía necesita saber que falta]
+```
+
+---
+
+## 6. Plantilla: Borrador para Storybook
+
+**Ruta de destino:** `docs/sistema-diseno/storybook/<slug-componente>.md`  
+**Fuente:** la spec fiel en `docs/sistema-diseno/ordenado/specs/<slug>.md`.  
+**Finalidad:** Contexto para crear `.stories.tsx` y el sample interactivo. La guía de uso, las buenas prácticas y la referencia de API viven en `componentes/` y no se reescriben aquí.
+
+```markdown
+# Contexto de Storybook: [Nombre del componente]
+
+> Borrador para montar historias y controles. Los campos marcados como `[No consta en notas / Validar con código]` deben contrastarse con el código del componente.
+>
+> Guía publicada: `docs/sistema-diseno/componentes/<slug>.md`
 
 ## Meta
-- **Title:** `Components/[Categoría]/[Nombre]`
+- **Title:** `Componentes/[Categoría]/[Nombre]`
 - **Component:** `[NombreComponente]`
 
-## ArgTypes y Props para Storybook Controls
+## ArgTypes y props para los controles
 ```typescript
-// Mapeo inicial sugerido a partir de las notas raw
+// Mapeo inicial a partir de la spec fiel. No añadir props que no consten.
 export const argTypes = {
-  // [Por cada propiedad detectada en las notas]:
   // propName: { control: 'select', options: [...], description: '...' },
 };
 ```
 
-## Historias Recomendadas
-1. **Default / Playground**: Componente en su estado base interactivo.
-2. **Variantes**: [Lista de variantes documentadas en las notas].
-3. **Estados**: [Lista de estados documentados en las notas].
-4. **Casos borde**: [Casos especiales o errores mencionados en las notas].
+## Historias recomendadas
+1. **Base:** componente en su estado de reposo.
+2. **Opciones:** [Variantes documentadas en la spec].
+3. **Estados:** [Estados documentados en la spec].
+4. **Casos límite:** [Casos especiales o errores que consten en la spec].
 
-## Snippets de Historias
+## Fragmentos de historias
 ```tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { [NombreComponente] } from './[NombreComponente]';
 
 const meta: Meta<typeof [NombreComponente]> = {
-  title: 'Components/[NombreComponente]',
+  title: 'Componentes/[NombreComponente]',
   component: [NombreComponente],
-  // argTypes configurados
 };
 export default meta;
 
 type Story = StoryObj<typeof [NombreComponente]>;
 
-export const Default: Story = {
+export const Base: Story = {
   args: {
-    // args basados en notas
+    // args tomados de la spec
   },
 };
 ```
-
-## Guía de Uso Rápido (Do's & Don'ts)
-- ✅ **Hacer:** [Prácticas recomendadas en las notas]
-- ❌ **Evitar:** [Prácticas desaconsejadas en las notas]
 ```
 
 ---
 
-## 6. Plantilla: Directrices de Voz y Tono de Marca
+## 7. Plantilla: Directrices de Voz y Tono de Marca
 
 **Ruta de destino:** `docs/sistema-diseno/marca/voz.md`  
 **Origen:** Extraído exclusivamente del material provisto por el usuario vía `incluir-marca` (texto, markdown o PDF).
@@ -293,7 +402,7 @@ export const Default: Story = {
 
 ---
 
-## 7. Plantilla: Nota Reorganizada
+## 8. Plantilla: Nota Reorganizada
 
 **Ruta de destino:** `docs/sistema-diseno/ordenado/<nombre-original>-ordenado.md`  
 **Regla de oro:** El archivo raw original NO se modifica. Se crea este nuevo fichero con la información limpia, con títulos lógicos y sintaxis pulida, preservando el 100% de los datos.
@@ -322,7 +431,7 @@ export const Default: Story = {
 
 ---
 
-## 8. Plantilla: Mensaje de Update para Compañeros
+## 9. Plantilla: Mensaje de Update para Compañeros
 
 **Destino:** Se imprime directamente en el chat para que el usuario copie y pegue (Slack, Microsoft Teams, Email, etc.). NO crea archivo en disco.
 

@@ -1,6 +1,6 @@
 # Glosario Rápido de Comandos — Skill Notas de Sistema de Diseño
 
-Guía rápida de los 9 comandos disponibles en la skill. Puedes invocar cualquiera de ellos simplemente escribiendo su nombre en el chat con el agente.
+Guía rápida de los 10 comandos disponibles en la skill. Puedes invocar cualquiera de ellos simplemente escribiendo su nombre en el chat con el agente.
 
 ---
 
@@ -12,8 +12,8 @@ Guía rápida de los 9 comandos disponibles en la skill. Puedes invocar cualquie
 ---
 
 ## 2. `reorganizar`
-- **Qué hace:** Toma una nota raw caótica (incluso sin títulos ni estructura) y genera una versión limpia y bien jerarquizada.
-- **Qué toca:** Crea un archivo nuevo en `docs/sistema-diseno/ordenado/<nombre>-ordenado.md`. El archivo raw original **permanece intacto**.
+- **Qué hace:** Toma una nota raw caótica (incluso sin títulos ni estructura) y genera una versión limpia y bien jerarquizada. No junta la spec de un componente: eso lo hace `actualizar-spec`.
+- **Qué toca:** Crea un archivo nuevo en `docs/sistema-diseno/ordenado/<nombre>-ordenado.md`. El archivo raw original **permanece intacto**. No escribe en `ordenado/specs/`.
 - **Cuándo usarlo:** Cuando quieres leer tus propios apuntes en limpio sin riesgo de perder ningún dato ni fragmento técnico.
 
 ---
@@ -33,35 +33,43 @@ Guía rápida de los 9 comandos disponibles en la skill. Puedes invocar cualquie
 ---
 
 ## 5. `actualizar-spec`
-- **Qué hace:** Crea o actualiza la especificación viva de un componente a partir de las notas raw. Estructura 11 apartados clave (props, variantes, estados, a11y, tokens, decisiones).
-- **Qué toca:** `docs/sistema-diseno/componentes/<slug-componente>.md`.
+- **Qué hace:** Junta en una spec fiel todo lo que las notas dicen de un componente: propósito, uso, anatomía, opciones, estados, propiedades, slots, tokens, eventos, métodos, accesibilidad, comportamiento, buenas prácticas y decisiones.
+- **Qué toca:** `docs/sistema-diseno/ordenado/specs/<slug-componente>.md`. No escribe la guía de `componentes/`.
 - **Regla clave:** Si un dato no figura en las notas, lo marca explícitamente como `No consta en las notas raw`. Nunca inventa propiedades.
-- **Cuándo usarlo:** Cuando se discuten o acuerdan especificaciones de un componente (ej. `actualizar-spec button`).
+- **Cuándo usarlo:** Cuando se discuten o acuerdan los hechos de un componente (ej. `actualizar-spec button`).
 
 ---
 
-## 6. `preparar-storybook`
-- **Qué hace:** Toma la spec viva del componente y genera un borrador de contexto optimizado para Storybook con sugerencias de `argTypes`, variantes a documentar y snippets de código `.stories.tsx`.
+## 6. `escribir-guia`
+- **Qué hace:** Redacta la guía publicada del componente, en español, con el orden de una página de design system: descripción general, uso, anatomía, buenas prácticas, opciones, comportamiento, accesibilidad, referencia de API y decisiones.
+- **Qué toca:** `docs/sistema-diseno/componentes/<slug-componente>.md`.
+- **Regla clave:** Solo lee la spec de `ordenado/specs/`. Publica las secciones que tienen datos y resume los huecos una sola vez en Información pendiente. No inventa contenido.
+- **Cuándo usarlo:** Cuando la spec fiel ya está al día y quieres la página del componente (ej. `escribir-guia button`).
+
+---
+
+## 7. `preparar-storybook`
+- **Qué hace:** Toma la spec fiel y genera el borrador del sample: `argTypes`, historias y fragmentos `.stories.tsx`. No reescribe la guía.
 - **Qué toca:** Crea o actualiza `docs/sistema-diseno/storybook/<slug-componente>.md`.
 - **Cuándo usarlo:** Cuando un desarrollador va a crear o actualizar las historias y controles del componente en Storybook.
 
 ---
 
-## 7. `generar-mensaje`
+## 8. `generar-mensaje`
 - **Qué hace:** Redacta un mensaje de resumen conciso, atractivo y adaptado al tono de marca para comunicar los avances del día al equipo.
 - **Qué toca:** **Ningún archivo.** Lo entrega directamente en el chat para que hagas `Copiar y Pegar` en Slack, Teams o email.
 - **Cuándo usarlo:** Al terminar el día o al liberar una versión interna para mantener informado al resto del equipo.
 
 ---
 
-## 8. `incluir-marca`
+## 9. `incluir-marca`
 - **Qué hace:** Procesa un archivo o texto de directrices de marca (PDF, markdown o texto) para extraer personalidad, tono, tratamiento y glosario técnico.
 - **Qué toca:** Guarda la fuente en `docs/sistema-diseno/marca/fuente/` y actualiza `docs/sistema-diseno/marca/voz.md`.
 - **Cuándo usarlo:** Al iniciar con una nueva empresa o cuando el equipo de branding actualice las guías de estilo y lenguaje.
 
 ---
 
-## 9. `clasificar`
+## 10. `clasificar`
 - **Qué hace:** Toma una nota raw extremadamente densa o mezclada y separa su contenido en archivos específicos e independientes en `docs/sistema-diseno/clasificado/` (cambios, deuda, notas de componentes).
 - **Qué toca:** Crea archivos nuevos en `clasificado/`. No altera el archivo raw original.
 - **Cuándo usarlo:** Antes de procesar notas muy largas tomadas durante reuniones donde se mezclaron múltiples temas a la vez.
