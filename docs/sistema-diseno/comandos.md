@@ -1,6 +1,6 @@
 # Glosario Rápido de Comandos — Skill Notas de Sistema de Diseño
 
-Guía rápida de los 10 comandos disponibles en la skill. Puedes invocar cualquiera de ellos simplemente escribiendo su nombre en el chat con el agente.
+Guía rápida de los 14 comandos disponibles en la skill. Puedes invocar cualquiera de ellos simplemente escribiendo su nombre en el chat con el agente. La skill no asume una empresa ni un design system: foundations, modos y nombres de token salen de tus notas, de tus exports o de `foundations/convenciones.md`.
 
 ---
 
@@ -70,6 +70,38 @@ Guía rápida de los 10 comandos disponibles en la skill. Puedes invocar cualqui
 ---
 
 ## 10. `clasificar`
-- **Qué hace:** Toma una nota raw extremadamente densa o mezclada y separa su contenido en archivos específicos e independientes en `docs/sistema-diseno/clasificado/` (cambios, deuda, notas de componentes).
+- **Qué hace:** Toma una nota raw extremadamente densa o mezclada y separa su contenido en archivos específicos e independientes en `docs/sistema-diseno/clasificado/` (cambios, deuda, notas de componentes, foundations).
 - **Qué toca:** Crea archivos nuevos en `clasificado/`. No altera el archivo raw original.
 - **Cuándo usarlo:** Antes de procesar notas muy largas tomadas durante reuniones donde se mezclaron múltiples temas a la vez.
+
+---
+
+## 11. `actualizar-foundation`
+- **Qué hace:** Junta en un acopio fiel todo lo que las fuentes dicen de una foundation (la que conste: color, tipografía, espaciado, bordes, layout u otra): principios, construcción, usos, modos, mediciones, limitaciones y decisiones.
+- **Qué toca:** `docs/sistema-diseno/ordenado/foundations/<slug>.md`. No escribe la guía de `foundations/`.
+- **Regla clave:** Conserva el detalle íntegro y marca lo que falta como `No consta en las notas raw`. No completa foundations que nadie haya pedido.
+- **Cuándo usarlo:** Cuando llegan notas, capturas o exports nuevos de una foundation (ej. `actualizar-foundation color`).
+
+---
+
+## 12. `escribir-foundation`
+- **Qué hace:** Redacta la guía publicada de la foundation: principios, cómo está construida, cómo usarla, modos, accesibilidad, implementación y limitaciones conocidas.
+- **Qué toca:** `docs/sistema-diseno/foundations/<slug>.md` y, si detecta huecos nuevos, `docs/sistema-diseno/pendientes.md`.
+- **Regla clave:** Solo lee el acopio fiel. Sin tablas de valores, sin frases sobre la procedencia y con los huecos resumidos una vez en Información pendiente.
+- **Cuándo usarlo:** Cuando el acopio está al día y quieres la página de la foundation (ej. `escribir-foundation color`).
+
+---
+
+## 13. `referencia-tokens`
+- **Qué hace:** Genera la tabla de tokens de un área desde los exports: semánticos de sistema primero, primitivos después, con el valor resuelto por modo cuando el export trae modos.
+- **Qué toca:** `docs/sistema-diseno/foundations/tokens/<area>.md`. Los tokens de componente los entrega a `ordenado/specs/<slug>.md`. El export no se modifica.
+- **Regla clave:** Nombres y valores exactos. Los tokens no válidos van a Tokens bloqueados, no a las tablas. La clasificación de grupos sale de `convenciones.md` si existe; si no, se usa el defecto de la skill.
+- **Cuándo usarlo:** Cada vez que se reexportan los tokens de un área (ej. `referencia-tokens color`).
+
+---
+
+## 14. `previsualizar`
+- **Qué hace:** Abre la documentación como una página local con pestañas, para leerla como una web sin usar la preview de cada Markdown.
+- **Qué toca:** Ningún archivo. Lee la carpeta de documentación y sirve una vista que vive en la skill (`vista/`, junto a `SKILL.md`).
+- **Regla clave:** Los `.md` no se modifican y la vista no se guarda a su lado. El código de la vista sí se versiona en el repositorio de la skill. Al subir la documentación a otro repositorio se copian solo esos `.md`.
+- **Cuándo usarlo:** Cuando quieres revisar componentes, foundations, tokens, changelog o deuda como un sitio, no como ficheros sueltos.
