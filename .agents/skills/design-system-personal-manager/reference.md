@@ -1,15 +1,23 @@
 # Plantillas de Referencia — Skill Notas de Sistema de Diseño
 
-Este archivo define la estructura exacta que deben seguir todos los documentos generados por la skill `design-system-notes`. 
+Este archivo define la estructura exacta que deben seguir todos los documentos generados por la skill `design-system-personal-manager`. 
 
 ---
 
 ## Reglas Generales de Aplicación
 
-1. **Fidelidad Absoluta**: Nunca inventar valores, propiedades, tokens, decisiones ni datos ficticios. En la spec fiel (`ordenado/specs/`), si un campo no aparece en las notas raw, debe indicarse explícitamente como `No consta en las notas raw`. En la guía publicada (`componentes/`), no se escribe ese marcador dentro de la sección: el apartado se omite y el hueco se resume en **Información pendiente**.
-2. **Omisión de Secciones Vacías**: En el **Reporte Diario** y en el **Changelog**, una sección SOLO se incluye si ese día existen notas correspondientes a esa área o tipo de cambio. No dejar secciones vacías.
+1. **Fidelidad Absoluta**: Nunca inventar valores, propiedades, tokens, decisiones ni datos ficticios. En el acopio fiel (`ordenado/specs/` y `ordenado/foundations/`), si un campo no aparece en las notas raw, debe indicarse explícitamente como `No consta en las notas raw`. En las páginas publicadas (`componentes/` y `foundations/`), no se escribe ese marcador dentro de la sección: el apartado se omite y el hueco se resume en **Información pendiente**.
+2. **Omisión de Secciones Vacías**: En el **Reporte Diario** y en el **Changelog**, una sección SOLO se incluye si ese día existen notas correspondientes a esa área o tipo de cambio. No dejar secciones vacías. En la referencia de tokens se omite igual cualquier grupo vacío.
 3. **Gestión de Restos**: Todo fragmento de información que no encaje de forma clara en las secciones predefinidas debe colocarse en un apartado final de **Resto / Sin clasificar**. Al finalizar el comando, el agente debe señalarlo explícitamente y preguntar al usuario dónde desea clasificarlo.
 4. **Voz de Marca**: Si existe `docs/sistema-diseno/marca/voz.md`, se aplican sus directrices a títulos, conectores y mensajes sin alterar la veracidad del contenido técnico. Si no existe, se emplea un tono profesional, claro y neutro.
+5. **Convenciones del Proyecto**: Si existe `docs/sistema-diseno/foundations/convenciones.md`, las plantillas 10 a 12 se rellenan con sus modos, clasificación de grupos, formato de valores y prefijo de pendientes. Ese fichero lo escribe el usuario, o el agente a petición suya con datos confirmados por él. La skill lo lee y no lo deduce. No se copian nombres, modos ni prefijos de otra empresa o de otro design system.
+6. **Valores por defecto sin convenciones**: Si `convenciones.md` no existe, no se inventa uno durante el comando. Se aplican estos defectos, y solo a la foundation o al área pedida:
+   - No hay lista cerrada de foundations, áreas ni nombres de token.
+   - Modos: solo los que consten en las notas o en el export. Si no hay, la referencia usa la tabla sin columnas de modo.
+   - Capas: primitivos, semánticos de sistema, componente y dominio. Los primitivos no se consumen directamente en producto.
+   - Valor: el del export, resuelto en la celda y con el alias entre paréntesis. No se convierten unidades ni espacios de color.
+   - Prefijo de pendientes: `PEND`.
+   - Los exports de tokens son de solo lectura.
 
 ---
 
@@ -453,4 +461,280 @@ export const Base: Story = {
 • [Alertas de breaking changes, migraciones o deuda relevante]
 
 📄 *Podéis consultar el changelog completo en `docs/sistema-diseno/changelog.md`.*
+```
+
+---
+
+## 10. Plantilla: Acopio fiel de la foundation
+
+**Ruta de destino:** `docs/sistema-diseno/ordenado/foundations/<slug>.md`  
+**Regla de lectura:** junta todo lo que consta de la foundation, con el detalle íntegro. Aquí sí se conservan mediciones completas, notaciones de origen y procedencia. Todo campo sin datos queda como `No consta en las notas raw`. El nombre de la foundation y el slug salen de las fuentes o de `convenciones.md`, no de una lista fija.
+
+```markdown
+# Acopio: [Nombre de la foundation]
+
+- **Slug:** `<slug>`
+- **Fecha:** YYYY-MM-DD
+- **Autor:** @autor
+- **Fuentes procesadas:** [Ficheros raw, notas ordenadas, exports y capturas leídos]
+
+## 1. Propósito y principios
+[Qué resuelve y qué criterios la guían, o "No consta en las notas raw"]
+
+## 2. Construcción
+- **Escalas / familias:** [Detalle o "No consta"]
+- **Capas:** [Primitivos, semánticos, otras o "No consta"]
+- **Unidades:** [Detalle o "No consta"]
+- **Método de construcción:** [Detalle o "No consta"]
+
+## 3. Roles y usos
+| Rol o token | Uso que consta | Restricción que consta | Origen |
+| :--- | :--- | :--- | :--- |
+| [rol] | [uso o "No consta"] | [restricción o "No consta"] | [fichero] |
+
+## 4. Combinaciones
+[Parejas o tríos fondo/contenido/borde, estilos y contextos, con su resultado si consta]
+
+## 5. Modos y variantes
+[Qué modos existen, qué cambia en cada uno y cómo se seleccionan, o "No consta"]
+
+## 6. Estados interactivos
+[Reglas por estado, o "No consta"]
+
+## 7. Accesibilidad y mediciones
+[Objetivos, mediciones completas con sus valores exactos y qué combinaciones cubren]
+
+## 8. Implementación
+- **Diseño:** [Colecciones, modos, variables o "No consta"]
+- **Código:** [Nombres exportados, formato, unidad o "No consta"]
+
+## 9. Limitaciones y excepciones
+[Detalle íntegro de cada limitación: valores, alcance, propósito aceptado, revisión propuesta]
+
+## 10. Decisiones
+[Acuerdos con fecha y origen]
+
+## 11. Procedencia y notas de origen
+[Qué aportó cada fuente; denominaciones distintas para una misma cosa; notaciones del origen]
+
+## 12. Información pendiente / resto
+- [Hueco o fragmento sin clasificar, con el ID de pendiente si ya existe]
+```
+
+---
+
+## 11. Plantilla: Guía de foundation
+
+**Ruta de destino:** `docs/sistema-diseno/foundations/<slug>.md`  
+**Fuente única:** `docs/sistema-diseno/ordenado/foundations/<slug>.md`. Si el acopio no existe, no generar la guía.  
+**Idioma:** español. Los títulos de sección se escriben como en esta plantilla y en este orden.  
+**Regla de lectura:** responde a qué usar, cuándo y por qué. Solo entran secciones con datos reales en el acopio. No contiene tablas de valores ni frases sobre la procedencia del contenido. Los huecos se resumen al final, una sola vez. Los modos, roles y grupos son los que consten, no un esquema de un sistema concreto.
+
+```markdown
+# [Nombre de la foundation]
+
+[Una o dos frases: qué resuelve esta foundation y para quién.]
+
+- **Estado:** [Borrador | En revisión | Estable | Obsoleto]
+- **Última actualización:** YYYY-MM-DD por @autor
+- **Fuentes:** `docs/sistema-diseno/ordenado/foundations/<slug>.md`
+- **Referencia de tokens:** [Enlace a `tokens/<area>.md`]
+
+## Principios
+- **[Principio].** [Qué implica en la práctica.]
+
+## Cómo está construido
+[Anatomía del sistema: escalas, familias, capas y unidades. Resumen del porqué técnico, sin tablas de valores.]
+
+## Cómo usarlo
+
+### [Grupo de roles]
+| Rol | Úsalo para | No lo uses para | Token |
+| :--- | :--- | :--- | :--- |
+| [rol] | [uso que consta] | [restricción que consta] | `[token]` |
+
+### Combinaciones
+| Fondo | Contenido | Borde | Contraste | Estado |
+| :--- | :--- | :--- | :--- | :--- |
+| `[token]` | `[token]` | `[token]` | [ratio medido] | [Verificado / Aceptado con limitación] |
+
+## Modos y variantes
+| Modo | Qué cambia | Qué se mantiene | Cómo se activa |
+| :--- | :--- | :--- | :--- |
+| [modo] | [detalle] | [detalle] | [detalle] |
+
+## Estados interactivos
+[La regla general de default, hover, focus, pressed y disabled. No el listado token a token.]
+
+## Accesibilidad
+- **Objetivo:** [Criterio]
+- **Verificado:** [Combinaciones o estilos comprobados]
+- **Sin verificar:** [Lo que queda fuera]
+
+## Correcto e incorrecto
+| Correcto | Incorrecto |
+| :--- | :--- |
+| [Ejemplo que consta] | [Ejemplo que consta] |
+
+## Implementación
+- **Diseño:** [Colección y modo; cómo aplicar la variable]
+- **Código:** [Nombre exportado, formato y unidad; ejemplo mínimo que conste]
+
+## Limitaciones conocidas
+| Limitación | Alcance | Decisión | Revisar cuando |
+| :--- | :--- | :--- | :--- |
+| [Resumen con una cifra como máximo] | [Dónde aplica] | [Aceptada / En revisión] | [Condición] |
+
+El detalle de las mediciones está en [el acopio o registro de decisiones].
+
+## Relacionado
+- [Componentes que la aplican]
+- [Registro de decisiones]
+
+## Información pendiente
+- [[ID](../pendientes.md#id): hueco que un lector de la guía necesita saber que falta]
+```
+
+---
+
+## 12. Plantilla: Referencia de tokens
+
+**Ruta de destino:** `docs/sistema-diseno/foundations/tokens/<area>.md`  
+**Fuente:** exports de tokens del área (solo lectura).  
+**Regla de lectura:** responde a cómo se llama cada token y cuánto vale. Solo tokens primitivos y semánticos de sistema, salvo que `convenciones.md` clasifique de otro modo. Los tokens de componente van a la spec y la guía de su componente. Valor resuelto en la celda y alias entre paréntesis. El área y los nombres de modo son los del export o de las convenciones.
+
+````markdown
+# Tokens — [Área]
+
+[Una frase que describe el contenido.] Para saber cuándo usar cada token, consulta la [guía de [Área]](../<slug>.md).
+
+- **Estado:** [Borrador | Estable]
+- **Última actualización:** YYYY-MM-DD por @autor
+- **Fuentes:** [Ficheros de tokens]
+- **Modos:** [Base] y [Alternativo] <!-- omitir si el área no tiene modos -->
+
+## Semánticos
+
+### [grupo]
+
+<!-- Área con modos -->
+| Muestra | Token | Uso | [Modo base] | [Modo alternativo] |
+| :--- | :--- | :--- | :--- | :--- |
+| | `grupo.rol` | [una línea o —] | `valor` (`{alias}`) | `valor` (`{alias}`) o `=` |
+
+<!-- Área sin modos -->
+| Token | Uso | Valor |
+| :--- | :--- | :--- |
+| `grupo.rol` | [una línea o —] | `valor` (`{alias}`) |
+
+## Primitivos
+
+> Los primitivos no se consumen directamente en producto. Usa los semánticos.
+
+### [familia]
+| Muestra | Token | Valor |
+| :--- | :--- | :--- |
+| | `familia.paso` | `valor` |
+
+## Tokens bloqueados
+<!-- Solo si existen tokens no válidos en el export. No se listan en las tablas anteriores. -->
+| Token | Motivo | Pendiente |
+| :--- | :--- | :--- |
+| `grupo.rol` | [Motivo breve] | [ID](../../pendientes.md#id) |
+
+## Tokens reubicados
+<!-- Solo si el export del área contiene tokens de componente o de dominio. -->
+| Grupo | Destino |
+| :--- | :--- |
+| `grupo` | [Enlace a la guía del componente o del dominio] |
+
+## Información pendiente
+- [[ID](../../pendientes.md#id): hueco que afecta a esta referencia]
+````
+
+Si `convenciones.md` permite consumir primitivos en producto, no se escribe la cita de esta sección.
+
+---
+
+## 13. Plantilla: Registro de pendientes
+
+**Ruta de destino:** `docs/sistema-diseno/pendientes.md`  
+**Modo de actualización:** añadir entradas con ID secuencial. No reutilizar, renumerar ni borrar. Un pendiente resuelto pasa a la sección **Resueltos** con su fecha. El prefijo sale de `convenciones.md`; si no hay convenciones, es `PEND`. Los problemas del sistema no se anotan aquí: van a `deuda.md`.
+
+```markdown
+# Registro de Pendientes — Sistema de Diseño
+
+Información que falta por aportar para completar la documentación. Los problemas del sistema se gestionan en `deuda.md`.
+
+---
+
+## Abiertos
+
+### [PREFIJO-01] [Título breve]
+- **Fecha de registro:** YYYY-MM-DD
+- **Registrado por:** @autor
+- **Qué falta:** [Hueco concreto]
+- **Qué hay que aportar:** [Dato, decisión o archivo necesario]
+- **Quién lo aporta:** [Persona o rol, o "No consta"]
+- **Páginas afectadas:** [Lista de rutas]
+- **Deuda relacionada:** [ID de `deuda.md` o "Ninguna"]
+
+---
+
+## Resueltos
+
+### [PREFIJO-00] [Título breve]
+- **Fecha de resolución:** YYYY-MM-DD
+- **Resolución:** [Qué se aportó y dónde quedó documentado]
+```
+
+---
+
+## 14. Plantilla: Convenciones del proyecto
+
+**Ruta de destino:** `docs/sistema-diseno/foundations/convenciones.md`  
+**Quién lo escribe:** el usuario, o el agente a petición suya con datos confirmados por él. La skill lo lee, no lo deduce. Todas las celdas son del proyecto en curso. Ningún ejemplo de esta plantilla se copia como si fuera un dato real.
+
+```markdown
+# Convenciones de Foundations — [Nombre del sistema]
+
+- **Última actualización:** YYYY-MM-DD por @autor
+
+## 1. Foundations y slugs
+| Foundation | Slug de la guía | Referencias de tokens | Notas |
+| :--- | :--- | :--- | :--- |
+| [nombre] | `<slug>` | `tokens/<area>.md` | [p. ej. integra otra área como sección] |
+
+## 2. Fuentes de tokens
+| Área | Ficheros |
+| :--- | :--- |
+| [área] | [ficheros del export] |
+
+## 3. Modos
+| Área | Modo base | Modo alternativo | Cómo se declara en el export |
+| :--- | :--- | :--- | :--- |
+| [área] | [nombre] | [nombre] | [extensión o clave] |
+
+## 4. Clasificación de grupos de tokens
+| Capa | Grupos | Destino |
+| :--- | :--- | :--- |
+| Primitivos | [grupos] | Referencia, «Primitivos» |
+| Semánticos de sistema | [grupos] | Referencia, «Semánticos» |
+| Componente | [grupo → componente] | Spec y guía del componente |
+| Dominio | [grupos] | [Guía o patrón] |
+
+## 5. Formato de valores
+- **Color:** [formato principal y secundario]
+- **Números y unidades:** [regla]
+
+## 6. Nombres preferidos
+| Usar | En lugar de | Nota |
+| :--- | :--- | :--- |
+| [término] | [variante] | [dónde aparece la variante] |
+
+## 7. Pendientes
+- **Prefijo de ID:** [PREFIJO]
+
+## 8. Registros de decisiones
+- [Ruta y tema de cada registro]
 ```

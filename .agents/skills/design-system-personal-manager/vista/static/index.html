@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Documentación</title>
+    <link rel="stylesheet" href="/estilos.css">
+  </head>
+  <body>
+    <header class="banda">
+      <div class="banda-inner">
+        <div class="identidad">
+          <p class="eyebrow">Vista local · solo lectura</p>
+          <p class="marca">Documentación</p>
+        </div>
+        <p class="raiz" id="raiz"></p>
+      </div>
+      <nav class="pestanas" id="pestanas" aria-label="Secciones"></nav>
+    </header>
+    <div class="marco">
+      <aside class="indice" id="indice" hidden></aside>
+      <main class="lectura" id="lectura" tabindex="-1"></main>
+    </div>
+    <script src="/markdown.js"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>

@@ -337,3 +337,44 @@ El padding horizontal de `sm` pasa de 8px a 12px para cubrir el área táctil m�
 
 📄 *Podéis consultar el changelog completo en `docs/sistema-diseno/changelog.md` y el reporte diario en `docs/sistema-diseno/reportes/2026-10-23.md`.*
 ```
+
+---
+
+## 8. Foundations, tokens y pendientes
+
+Ejemplo genérico. Los nombres salen de la nota de este apartado. No se añade un segundo modo, otra foundation ni un prefijo de empresa.
+
+Nota de origen:
+
+```markdown
+foundation color. un solo valor, sin modos.
+color.bg.default = #FFFFFF, alias {color.white}
+sirve para fondo de página. no usar para texto.
+el contraste de texto sobre ese fondo no está medido.
+```
+
+`actualizar-foundation color` conserva la medición ausente y la procedencia en el acopio (`ordenado/foundations/color.md`): la sección de modos queda en `No consta en las notas raw`.
+
+`escribir-foundation color` publica solo lo que consta y abre un pendiente, sin tabla de la escala y sin decir de qué nota salió:
+
+```markdown
+## Cómo usarlo
+
+### Fondos
+| Rol | Úsalo para | No lo uses para | Token |
+| :--- | :--- | :--- | :--- |
+| Fondo de página | Fondo de página | Texto | `color.bg.default` |
+
+## Información pendiente
+- [PEND-01](../pendientes.md#pend-01): contraste del texto sobre `color.bg.default`.
+```
+
+`referencia-tokens color`, con un export que trae ese único token y ningún modo, escribe una tabla de una columna. El token no se duplica en Primitivos si el export lo trae como semántico. No se inventa una columna de modo alternativo.
+
+```markdown
+| Token | Uso | Valor |
+| :--- | :--- | :--- |
+| `color.bg.default` | Fondo de página | `#FFFFFF` (`{color.white}`) |
+```
+
+El hueco de contraste va a `pendientes.md` como `PEND-01`, no a `deuda.md`. Si más adelante existe `convenciones.md` con otro prefijo, los IDs nuevos usan ese prefijo y `PEND-01` no se renumera.
