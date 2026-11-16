@@ -13,15 +13,16 @@ Esta skill estandariza el flujo de trabajo para transformar notas desestructurad
 
 ### 1. Fidelidad Absoluta (Anti-Alucinación)
 - **Nunca inventar datos:** Prohibido inventar nombres de componentes, props, tokens, variantes, decisiones de arquitectura o justificaciones que no figuren en las notas de origen.
-- **Transparencia en vacíos:** En el acopio fiel (`ordenado/specs/` y `ordenado/foundations/`), si un campo no se menciona en las notas, debe registrarse explícitamente como `No consta en las notas raw`. En las páginas publicadas (`componentes/`, `foundations/` y `foundations/tokens/`), el apartado vacío no se rellena: se omite y el hueco se resume una sola vez en **Información pendiente**.
+- **Transparencia en vacíos:** En el acopio fiel (`ordenado/specs/` y `ordenado/foundations/`), si un campo no se menciona en las notas, debe registrarse explícitamente como `No consta en las notas raw`. En las páginas publicadas (`guias/componentes/`, `guias/foundations/` y `guias/foundations/tokens/`), el apartado vacío no se rellena: se omite y el hueco se resume una sola vez en **Información pendiente**.
 - **Preservación total:** No eliminar ningún hecho técnico real ni descartar información. Lo que no encaje en las categorías predefinidas debe ir a la sección **Resto / Sin clasificar**.
+- **Notaciones de color:** Si un valor hexadecimal consta, se conserva la notación `{{swatch:#abc}}`, `{{swatch:#aabbcc}}` o `{{ramp:01=#aabbcc;02=#ddeeff}}`. Solo hexadecimal de 3 o 6 dígitos y, en la rampa, pasos de 2 o 3 dígitos. No se inventan colores ni pasos, ni se traduce la notación a HTML: la vista la dibuja.
 - **Gestión de dudas:** Si una nota es ambigua o parece deuda sin confirmar, se registra bajo **Posible Deuda / Para Confirmar** o **Sin clasificar**, y se consulta al usuario al finalizar.
 
 ### 2. Regla Estricta: Ficheros Raw Intocables
 - **Los ficheros bajo `raw/` son de SOLO LECTURA.**
 - Ningún comando debe sobrescribir, editar, reordenar, truncar ni vaciar un fichero raw.
 - La única excepción es el comando `renombrar-raw`, el cual modifica **únicamente** el nombre del archivo en disco; el contenido interior se mantiene byte a byte idéntico.
-- Las salidas procesadas siempre se escriben en rutas dedicadas (`ordenado/`, `clasificado/`, `reportes/`, `componentes/`, `foundations/`, `pendientes.md`, etc.). Si un archivo de destino ya existe, advertir al usuario antes de sobrescribir. `pendientes.md` y `deuda.md` no se sobrescriben: se les añaden entradas.
+- Las salidas procesadas siempre se escriben en rutas dedicadas (`ordenado/`, `clasificado/`, `reportes/`, `guias/`, `pendientes.md`, etc.). Si un archivo de destino ya existe, advertir al usuario antes de sobrescribir. `pendientes.md` y `deuda.md` no se sobrescriben: se les añaden entradas.
 
 ### 3. Tono y Voz de Marca
 - Si existe el archivo `docs/sistema-diseno/marca/voz.md`, aplicar sus principios de estilo, tratamiento y glosario a los textos generados (títulos, conectores y mensajes).
@@ -29,10 +30,13 @@ Esta skill estandariza el flujo de trabajo para transformar notas desestructurad
 - Si no existe guía de marca, utilizar un tono profesional, claro, directo y neutro en el mismo idioma de las notas.
 
 ### 4. Genérica: convenciones del proyecto, no de un sistema concreto
-- La skill no asume empresa, producto, colección, prefijo de token, nombres de modo ni una lista cerrada de foundations. Esos datos, si existen, viven en `docs/sistema-diseno/foundations/convenciones.md`.
-- Ese fichero lo escribe el usuario, o el agente solo cuando el usuario confirma cada dato. No se deduce de nombres sueltos, de un export parcial ni de otro sistema trabajado antes.
-- Si `convenciones.md` no existe, se usan los valores por defecto de [reference.md](reference.md): capas primitivo, semántico de sistema, componente y dominio; prefijo de pendientes `PEND`; modos solo cuando constan; valor tal como viene en el export.
-- Foundations, áreas y slugs salen de lo que pidan las notas, el export o el usuario. Un export de solo un área no autoriza a documentar el resto del sistema.
+- La skill no asume empresa, producto, colección, prefijo de token, nombres de modo ni una lista cerrada de foundations. Esos datos, si existen, viven en el archivo de convenciones del proyecto.
+- Antes de concluir que no existe, localizarlo en este orden: `guias/foundations/convenciones.md`; un único `guias/foundations/<dígitos>-convenciones.md` (por ejemplo `01-convenciones.md`); `guias/convenciones.md`; y, en último lugar, las mismas tres formas bajo `foundations/` sin `guias/`. Si hay más de un archivo con prefijo numérico y ninguno se llama exactamente `convenciones.md`, preguntar cuál rige. No dar el archivo por ausente solo porque no está en `foundations/convenciones.md`.
+- Cuando este flujo mencione `convenciones.md`, se refiere a ese archivo localizado.
+- Ese fichero lo escribe el usuario, o el agente solo cuando el usuario confirma cada dato. No se deduce de nombres sueltos, de un export parcial ni de otro sistema trabajado antes. Si no hay ninguno, el destino de uno nuevo es `guias/foundations/convenciones.md`, sin inventar un prefijo numérico.
+- Si no se localiza archivo de convenciones, se usan los valores por defecto de [reference.md](reference.md): capas primitivo, semántico de sistema, componente y dominio; prefijo de pendientes `PEND`; modos solo cuando constan; valor tal como viene en el export.
+- Respetar los slugs publicados en las convenciones. El prefijo numérico de una guía (`02-colores.md`) se queda en el nombre de esa guía. No se copia al acopio ni a la referencia de tokens: `ordenado/foundations/colores.md` y `guias/foundations/tokens/colores.md`. Sin convenciones, el slug es el nombre de la fuente en minúsculas y con guiones, también sin ese prefijo.
+- Foundations, áreas y slugs salen de lo que pidan las notas, el export, las convenciones o el usuario. Un export de solo un área no autoriza a documentar el resto del sistema.
 - Los ficheros de export de tokens son de solo lectura, igual que `raw/`.
 
 ---
@@ -47,21 +51,27 @@ docs/sistema-diseno/
 ├── ordenado/                    <- Notas limpias y acopio fiel
 │   ├── <nota>-ordenado.md       <- Salida del comando reorganizar
 │   ├── specs/<slug>.md          <- Spec fiel: junta todo lo que consta del componente
-│   └── foundations/<slug>.md    <- Acopio fiel de una foundation
+│   └── foundations/<slug>.md    <- Acopio fiel. El slug no lleva prefijo numérico
 ├── clasificado/                 <- Salidas del comando clasificar
-├── componentes/                 <- Guía publicada del componente, en español (<slug>.md)
-├── foundations/                 <- Guías publicadas de foundations (<slug>.md)
-│   ├── tokens.md                <- Introducción a los tokens, si consta material para ella
-│   ├── tokens/<area>.md         <- Referencia de tokens por área
-│   └── convenciones.md          <- Convenciones del proyecto (opcional; no se inventa)
+├── guias/                       <- Páginas publicadas que muestra la vista
+│   ├── convenciones.md          <- Opcional, si no está en foundations/
+│   ├── vocabulario.md           <- Vocabulario publicado (opcional)
+│   ├── componentes/<slug>.md    <- Guía publicada del componente, en español
+│   └── foundations/
+│       ├── <guia>.md            <- Guía publicada; puede llevar prefijo (02-colores.md)
+│       ├── convenciones.md      <- O <dígitos>-convenciones.md, p. ej. 01-convenciones.md
+│       ├── tokens.md            <- Introducción a los tokens, si consta material para ella
+│       └── tokens/<area>.md     <- Referencia de tokens; el área es el slug, sin prefijo
 ├── reportes/                    <- Reportes diarios agrupados por área (YYYY-MM-DD.md)
 ├── storybook/                   <- Borradores de contexto para Storybook (<slug>.md)
 ├── marca/
 │   ├── fuente/                  <- Archivos de marca originales (PDF, MD, TXT)
 │   └── voz.md                   <- Directrices extraídas de tono y redacción
-├── changelog.md                 <- Registro cronológico acumulativo por tipo de cambio
+├── changelog.md                 <- Registro cronológico del sistema de diseño
+├── changelog-documentacion.md   <- Registro de la documentación y del gestor
 ├── deuda.md                     <- Registro centralizado de deuda técnica y tareas
-└── pendientes.md                <- Registro único de información por aportar
+├── pendientes.md                <- Registro único de información por aportar
+└── comandos.md                  <- Glosario de comandos para quien lee la documentación
 ```
 
 ---
@@ -141,13 +151,13 @@ Junta en una spec fiel todo lo que las notas dicen de un componente. No redacta 
 2. Determinar el slug del componente tal como viene en las notas (ej. `badge.md`, `action-button.md`).
 3. Crear o actualizar `docs/sistema-diseno/ordenado/specs/<slug>.md` con la plantilla de spec fiel de `reference.md`.
 4. Rellenar cada sección con la información encontrada. Todo campo no mencionado en las notas debe quedar explícitamente como `No consta en las notas raw`.
-5. No escribir este acopio en `componentes/`. Esa carpeta es solo la guía publicada.
+5. No escribir este acopio en `guias/componentes/`. Esa carpeta es solo la guía publicada.
 6. Reportar al usuario qué secciones quedaron completas y cuáles en `No consta`.
 
 ### 8. `escribir-guia`
 Redacta la guía del componente al estilo de una página de design system (Calcite, Material, Atlassian), en español, a partir de la spec fiel.
 1. Leer `docs/sistema-diseno/ordenado/specs/<slug>.md`. Si no existe, detenerse y pedir `actualizar-spec` antes. No volver a las notas raw para completar la guía.
-2. Crear o actualizar `docs/sistema-diseno/componentes/<slug>.md` con la plantilla de guía de `reference.md`.
+2. Crear o actualizar `docs/sistema-diseno/guias/componentes/<slug>.md` con la plantilla de guía de `reference.md`.
 3. Escribir solo las secciones que tengan datos reales en la spec. Títulos en español: Descripción general, Uso, Anatomía, Buenas prácticas, Opciones, Comportamiento, Accesibilidad, Referencia de API, Decisiones, Información pendiente.
 4. No inventar ejemplos, props, tokens ni recomendaciones. No rellenar huecos con `No consta` dentro del cuerpo: resumirlos una sola vez en **Información pendiente**.
 5. Si ya existe una guía, advertir antes de sobrescribir.
@@ -158,7 +168,7 @@ Genera el borrador de contexto necesario para documentar el componente en Storyb
 1. Leer la spec fiel en `docs/sistema-diseno/ordenado/specs/<slug>.md`. Si no existe, detenerse y pedir `actualizar-spec` antes.
 2. Generar `docs/sistema-diseno/storybook/<slug>.md` siguiendo la plantilla de `reference.md`.
 3. Mapear argTypes preliminares, variantes y estados documentados en la spec.
-4. Enlazar la guía publicada en `docs/sistema-diseno/componentes/<slug>.md` si existe. No reescribir ahí el uso, las buenas prácticas ni la referencia de API.
+4. Enlazar la guía publicada en `docs/sistema-diseno/guias/componentes/<slug>.md` si existe. No reescribir ahí el uso, las buenas prácticas ni la referencia de API.
 5. Señalar de forma explícita qué props o controles requieren confirmación del desarrollador frente al código fuente (`[No consta en notas / Validar con código]`).
 
 ### 10. `clasificar`
@@ -174,30 +184,30 @@ Junta en un acopio fiel todo lo que las fuentes dicen de una foundation. No reda
 1. Leer las notas, capturas y exports que el usuario indique, o los que hablen de esa foundation. Foundations y slug salen de ese material (color, tipografía, espaciado, bordes, layout u otra que conste). No completar una lista fija de foundations.
 2. Crear o actualizar `docs/sistema-diseno/ordenado/foundations/<slug>.md` con la plantilla de acopio de `reference.md`.
 3. Conservar el detalle íntegro: mediciones completas, notaciones de origen y procedencia. Todo campo sin datos queda como `No consta en las notas raw`.
-4. No escribir este acopio en `foundations/` fuera de `ordenado/`. Esa carpeta es solo la guía publicada.
-5. Si `convenciones.md` existe, usar sus nombres de foundation y slug. Si no existe, usar el nombre que conste en las fuentes, en minúsculas y con guiones.
+4. No escribir este acopio en `guias/foundations/`. Esa carpeta es solo la guía publicada.
+5. Si el archivo de convenciones localizado existe, usar sus nombres de foundation y el slug publicado, sin prefijo numérico. Si no existe, usar el nombre que conste en las fuentes, en minúsculas y con guiones, también sin prefijo numérico.
 6. Reportar qué secciones quedaron completas y cuáles en `No consta`.
 
 ### 12. `escribir-foundation`
 Redacta la guía publicada de la foundation a partir del acopio fiel.
 1. Leer `docs/sistema-diseno/ordenado/foundations/<slug>.md`. Si no existe, detenerse y pedir `actualizar-foundation` antes. No volver a las notas raw para completar la guía.
-2. Crear o actualizar `docs/sistema-diseno/foundations/<slug>.md` con la plantilla de guía de foundation de `reference.md`.
+2. Crear o actualizar la guía en `docs/sistema-diseno/guias/foundations/`. Si ya existe un archivo con prefijo numérico para ese slug (por ejemplo `02-colores.md`), actualizar ese archivo y no crear otro sin prefijo. No inventar un prefijo. La plantilla es la de guía de foundation de `reference.md`.
 3. Responder a qué usar, cuándo y por qué. Publicar solo secciones con datos reales, en el orden de la plantilla. Sin tablas de valores y sin frases sobre la procedencia del contenido.
 4. No inventar principios, roles, combinaciones, modos ni limitaciones. Los huecos se resumen una sola vez en **Información pendiente**.
 5. Cada hueco nuevo se registra en `docs/sistema-diseno/pendientes.md` con la plantilla de `reference.md`. No reutilizar, renumerar ni borrar IDs. Un pendiente ya abierto se actualiza en sus páginas afectadas; no se duplica. El prefijo es el de `convenciones.md` o, en su defecto, `PEND`.
-6. Enlazar la referencia de tokens de `foundations/tokens/<area>.md` solo si ese archivo existe.
+6. Enlazar la referencia de tokens de `guias/foundations/tokens/<area>.md` solo si ese archivo existe. El enlace relativo desde la guía es `tokens/<area>.md`.
 7. Si ya existe una guía, advertir antes de sobrescribir.
 8. Reportar qué secciones se publicaron, qué quedó pendiente y qué IDs se abrieron o actualizaron.
 
 ### 13. `referencia-tokens`
 Genera la referencia de tokens de un área desde los exports. No redacta la guía de la foundation.
 1. Leer solo los exports que el usuario indique o que `convenciones.md` liste para esa área. No modificar esos ficheros. Si no hay export ni convención que lo localice, detenerse y pedirlo. No buscar tokens en otro sistema.
-2. Crear o actualizar `docs/sistema-diseno/foundations/tokens/<area>.md` con la plantilla de referencia de `reference.md`. El área es la pedida, no un catálogo predefinido.
+2. Crear o actualizar `docs/sistema-diseno/guias/foundations/tokens/<area>.md` con la plantilla de referencia de `reference.md`. El área es el slug publicado, sin prefijo numérico, no un catálogo predefinido.
 3. Nombres y valores exactos del export. Valor resuelto en la celda y alias entre paréntesis, salvo que `convenciones.md` fije otro formato. No convertir unidades ni espacios de color.
 4. Clasificar con `convenciones.md` si existe. Si no existe, aplicar el defecto: semánticos de sistema en **Semánticos**, primitivos en **Primitivos**, tokens de componente fuera de esas tablas y tokens de dominio aparte. Los primitivos no se documentan como consumo directo de producto salvo que las convenciones lo permitan.
 5. Modos: columnas solo para los modos que consten en el export o en `convenciones.md`. Sin modos, usar la tabla de una sola columna de valor. No inventar un modo alternativo.
 6. Los tokens no válidos van a **Tokens bloqueados**, no a las tablas, y abren o actualizan una entrada en `pendientes.md`.
-7. Los tokens de componente se incorporan a `ordenado/specs/<slug>.md`, en Estilos y tokens, sin borrar el resto de la spec. Si la spec no existe, crearla con la plantilla y rellenar solo los tokens que constan; el resto queda en `No consta en las notas raw`. En la referencia del área se listan en **Tokens reubicados**. No se escribe con ellos la guía de `componentes/`.
+7. Los tokens de componente se incorporan a `ordenado/specs/<slug>.md`, en Estilos y tokens, sin borrar el resto de la spec. Si la spec no existe, crearla con la plantilla y rellenar solo los tokens que constan; el resto queda en `No consta en las notas raw`. En la referencia del área se listan en **Tokens reubicados**. No se escribe con ellos la guía de `guias/componentes/`.
 8. Un grupo de dominio sin destino en `convenciones.md` queda en **Tokens reubicados** con destino pendiente y se pregunta al usuario. No se crea una guía de dominio para alojarlo.
 9. Omitir grupos vacíos. Reportar cuántos tokens entraron por capa, cuáles quedaron bloqueados o reubicados y qué pendientes se abrieron.
 
@@ -213,8 +223,21 @@ python3 "<directorio-de-este-SKILL>/vista/server.py" --raiz "<raiz-de-documentac
 
    Si el puerto `8765` está ocupado, elegir otro con `--puerto`.
 4. Abrir en el navegador la URL que imprime el servidor (`http://127.0.0.1:…/`).
-5. La vista agrupa por las carpetas que existan (componentes, foundations, tokens, changelog, deuda, pendientes y cualquier otra carpeta con Markdown). No inventa secciones vacías ni nombres de un sistema concreto.
-6. `vista/` forma parte de la skill y sí se incluye en el repositorio de la skill. No se copia a la carpeta de documentación ni al repositorio donde se publican los `.md`: ahí solo van esos Markdown. No añadir un `.gitignore` que excluya `vista/` en el repositorio de la skill.
+5. La vista no crea categorías a partir de las carpetas que encuentre. Solo admite estas rutas, relativas a la raíz documental:
+   - Raíz: `changelog.md`, `changelog-documentacion.md`, `deuda.md` y `comandos.md`.
+   - `guias/convenciones.md` y `guias/vocabulario.md`.
+   - `guias/foundations/<guia>.md`, excepto la referencia de tokens.
+   - `guias/foundations/tokens.md` y `guias/foundations/tokens/<area>.md`.
+   - `guias/componentes/<componente>.md`.
+   `raw/`, `ordenado/`, `clasificado/`, `storybook/`, `marca/`, `pendientes.md` y cualquier otra ruta no se listan. El endpoint que devuelve el Markdown responde 404 fuera de esa allowlist. No se crean pestañas para secciones vacías.
+6. Las pestañas superiores son, como máximo y en este orden: **Foundations**, **Tokens**, **Componentes**, **Changelog**, **Deuda y pendientes**, **Comandos**, **Convenciones** y **Vocabulario**. Solo se muestran las que tienen documentos.
+   - **Foundations:** `guias/foundations/`, excepto `tokens.md` y `tokens/`. Una guía `01-convenciones.md` entra aquí.
+   - **Tokens:** `guias/foundations/tokens.md` y `guias/foundations/tokens/`.
+   - **Componentes:** `guias/componentes/`.
+   - **Changelog:** una sola pestaña para `changelog.md` y `changelog-documentacion.md`. Dentro hay dos pestañas, **Sistema de diseño** y **Documentación y gestor**. En esa sección no se duplica el índice lateral.
+   - **Convenciones** y **Vocabulario** leen `guias/convenciones.md` y `guias/vocabulario.md`.
+7. En el Markdown publicado, `{{swatch:#abc}}` o `{{swatch:#aabbcc}}` se dibuja como una muestra, y `{{ramp:01=#aabbcc;02=#ddeeff}}` como una rampa. Cualquier otra forma se deja como texto.
+8. `vista/` forma parte de la skill y sí se incluye en el repositorio de la skill. No se copia a la carpeta de documentación ni al repositorio donde se publican los `.md`: ahí solo van esos Markdown. No añadir un `.gitignore` que excluya `vista/` en el repositorio de la skill.
 
 ---
 
