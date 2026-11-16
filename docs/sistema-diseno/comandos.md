@@ -1,6 +1,6 @@
 # Glosario Rápido de Comandos — Skill Notas de Sistema de Diseño
 
-Guía rápida de los 14 comandos disponibles en la skill. Puedes invocar cualquiera de ellos simplemente escribiendo su nombre en el chat con el agente. La skill no asume una empresa ni un design system: foundations, modos y nombres de token salen de tus notas, de tus exports o de `foundations/convenciones.md`.
+Guía rápida de los 14 comandos disponibles en la skill. Puedes invocar cualquiera de ellos simplemente escribiendo su nombre en el chat con el agente. La skill no asume una empresa ni un design system: foundations, modos y nombres de token salen de tus notas, de tus exports o del archivo de convenciones localizado (`guias/foundations/convenciones.md`, también `01-convenciones.md` u otra ruta equivalente).
 
 ---
 
@@ -34,7 +34,7 @@ Guía rápida de los 14 comandos disponibles en la skill. Puedes invocar cualqui
 
 ## 5. `actualizar-spec`
 - **Qué hace:** Junta en una spec fiel todo lo que las notas dicen de un componente: propósito, uso, anatomía, opciones, estados, propiedades, slots, tokens, eventos, métodos, accesibilidad, comportamiento, buenas prácticas y decisiones.
-- **Qué toca:** `docs/sistema-diseno/ordenado/specs/<slug-componente>.md`. No escribe la guía de `componentes/`.
+- **Qué toca:** `docs/sistema-diseno/ordenado/specs/<slug-componente>.md`. No escribe la guía de `guias/componentes/`.
 - **Regla clave:** Si un dato no figura en las notas, lo marca explícitamente como `No consta en las notas raw`. Nunca inventa propiedades.
 - **Cuándo usarlo:** Cuando se discuten o acuerdan los hechos de un componente (ej. `actualizar-spec button`).
 
@@ -42,7 +42,7 @@ Guía rápida de los 14 comandos disponibles en la skill. Puedes invocar cualqui
 
 ## 6. `escribir-guia`
 - **Qué hace:** Redacta la guía publicada del componente, en español, con el orden de una página de design system: descripción general, uso, anatomía, buenas prácticas, opciones, comportamiento, accesibilidad, referencia de API y decisiones.
-- **Qué toca:** `docs/sistema-diseno/componentes/<slug-componente>.md`.
+- **Qué toca:** `docs/sistema-diseno/guias/componentes/<slug-componente>.md`.
 - **Regla clave:** Solo lee la spec de `ordenado/specs/`. Publica las secciones que tienen datos y resume los huecos una sola vez en Información pendiente. No inventa contenido.
 - **Cuándo usarlo:** Cuando la spec fiel ya está al día y quieres la página del componente (ej. `escribir-guia button`).
 
@@ -78,7 +78,7 @@ Guía rápida de los 14 comandos disponibles en la skill. Puedes invocar cualqui
 
 ## 11. `actualizar-foundation`
 - **Qué hace:** Junta en un acopio fiel todo lo que las fuentes dicen de una foundation (la que conste: color, tipografía, espaciado, bordes, layout u otra): principios, construcción, usos, modos, mediciones, limitaciones y decisiones.
-- **Qué toca:** `docs/sistema-diseno/ordenado/foundations/<slug>.md`. No escribe la guía de `foundations/`.
+- **Qué toca:** `docs/sistema-diseno/ordenado/foundations/<slug>.md`. No escribe la guía de `guias/foundations/`. El slug no lleva el prefijo numérico de la guía.
 - **Regla clave:** Conserva el detalle íntegro y marca lo que falta como `No consta en las notas raw`. No completa foundations que nadie haya pedido.
 - **Cuándo usarlo:** Cuando llegan notas, capturas o exports nuevos de una foundation (ej. `actualizar-foundation color`).
 
@@ -86,7 +86,7 @@ Guía rápida de los 14 comandos disponibles en la skill. Puedes invocar cualqui
 
 ## 12. `escribir-foundation`
 - **Qué hace:** Redacta la guía publicada de la foundation: principios, cómo está construida, cómo usarla, modos, accesibilidad, implementación y limitaciones conocidas.
-- **Qué toca:** `docs/sistema-diseno/foundations/<slug>.md` y, si detecta huecos nuevos, `docs/sistema-diseno/pendientes.md`.
+- **Qué toca:** `docs/sistema-diseno/guias/foundations/<guia>.md` y, si detecta huecos nuevos, `docs/sistema-diseno/pendientes.md`. Si la guía ya se llama `02-colores.md`, se actualiza ese archivo.
 - **Regla clave:** Solo lee el acopio fiel. Sin tablas de valores, sin frases sobre la procedencia y con los huecos resumidos una vez en Información pendiente.
 - **Cuándo usarlo:** Cuando el acopio está al día y quieres la página de la foundation (ej. `escribir-foundation color`).
 
@@ -94,14 +94,14 @@ Guía rápida de los 14 comandos disponibles en la skill. Puedes invocar cualqui
 
 ## 13. `referencia-tokens`
 - **Qué hace:** Genera la tabla de tokens de un área desde los exports: semánticos de sistema primero, primitivos después, con el valor resuelto por modo cuando el export trae modos.
-- **Qué toca:** `docs/sistema-diseno/foundations/tokens/<area>.md`. Los tokens de componente los entrega a `ordenado/specs/<slug>.md`. El export no se modifica.
-- **Regla clave:** Nombres y valores exactos. Los tokens no válidos van a Tokens bloqueados, no a las tablas. La clasificación de grupos sale de `convenciones.md` si existe; si no, se usa el defecto de la skill.
+- **Qué toca:** `docs/sistema-diseno/guias/foundations/tokens/<area>.md`. Los tokens de componente los entrega a `ordenado/specs/<slug>.md`. El export no se modifica. El nombre del área no lleva prefijo numérico.
+- **Regla clave:** Nombres y valores exactos. Los tokens no válidos van a Tokens bloqueados, no a las tablas. La clasificación de grupos sale del archivo de convenciones localizado; si no existe, se usa el defecto de la skill.
 - **Cuándo usarlo:** Cada vez que se reexportan los tokens de un área (ej. `referencia-tokens color`).
 
 ---
 
 ## 14. `previsualizar`
-- **Qué hace:** Abre la documentación como una página local con pestañas, para leerla como una web sin usar la preview de cada Markdown.
+- **Qué hace:** Abre la documentación publicada como una página local con pestañas, para leerla como una web sin usar la preview de cada Markdown.
 - **Qué toca:** Ningún archivo. Lee la carpeta de documentación y sirve una vista que vive en la skill (`vista/`, junto a `SKILL.md`).
-- **Regla clave:** Los `.md` no se modifican y la vista no se guarda a su lado. El código de la vista sí se versiona en el repositorio de la skill. Al subir la documentación a otro repositorio se copian solo esos `.md`.
+- **Regla clave:** Los `.md` no se modifican y la vista no se guarda a su lado. Solo entran las guías de `guias/`, más `changelog.md`, `changelog-documentacion.md`, `deuda.md` y `comandos.md`. Changelog tiene dos pestañas internas: Sistema de diseño, y Documentación y gestor. `raw/`, `ordenado/`, `storybook/` y el resto no se muestran.
 - **Cuándo usarlo:** Cuando quieres revisar componentes, foundations, tokens, changelog o deuda como un sitio, no como ficheros sueltos.

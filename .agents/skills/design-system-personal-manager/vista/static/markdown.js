@@ -39,10 +39,77 @@
     return { externo: true, href: "/archivo/" + ruta.split("/").map(encodeURIComponent).join("/") };
   }
 
+  function colorHex(valor) {
+    return /^#(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test(valor);
+  }
+
+  function pasosRampa(cuerpo) {
+    if (!cuerpo) return null;
+    const trozos = cuerpo.split(";");
+    const pasos = [];
+    for (let n = 0; n < trozos.length; n += 1) {
+      const coincide = /^(\d{2,3})=(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})$/.exec(trozos[n]);
+      if (!coincide) return null;
+      pasos.push({ paso: coincide[1], color: coincide[2] });
+    }
+    return pasos;
+  }
+
+  function esRampaSola(linea) {
+    const coincide = /^\{\{ramp:([^}]*)\}\}$/.exec(linea.trim());
+    return !!(coincide && pasosRampa(coincide[1]));
+  }
+
+  function renderMuestra(color, etiqueta) {
+    return (
+      '<span class="muestra-color" role="img" title="' +
+      escapeHtml(color) +
+      '" aria-label="' +
+      escapeHtml(etiqueta) +
+      '" style="background-color:' +
+      color +
+      '"></span>'
+    );
+  }
+
+  function renderRampa(pasos) {
+    const items = pasos
+      .map(function (item) {
+        const nombre = "Paso " + item.paso + ", " + item.color;
+        return (
+          '<li class="muestra-rampa-color">' +
+          renderMuestra(item.color, nombre) +
+          '<span class="muestra-rampa-paso" aria-hidden="true"><span>' +
+          escapeHtml(item.paso) +
+          "</span><span>" +
+          escapeHtml(item.color) +
+          "</span></span></li>"
+        );
+      })
+      .join("");
+    return '<ol class="muestra-rampa">' + items + "</ol>";
+  }
+
   function renderInline(texto, base) {
     let i = 0;
     let html = "";
     while (i < texto.length) {
+      if (texto.startsWith("{{", i)) {
+        const resto = texto.slice(i);
+        const swatch = /^\{\{swatch:(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})\}\}/.exec(resto);
+        if (swatch && colorHex(swatch[1])) {
+          html += renderMuestra(swatch[1], "Muestra de color " + swatch[1]);
+          i += swatch[0].length;
+          continue;
+        }
+        const ramp = /^\{\{ramp:([^}]*)\}\}/.exec(resto);
+        const pasos = ramp ? pasosRampa(ramp[1]) : null;
+        if (pasos) {
+          html += renderRampa(pasos);
+          i += ramp[0].length;
+          continue;
+        }
+      }
       if (texto[i] === "`") {
         const fin = texto.indexOf("`", i + 1);
         if (fin !== -1) {
@@ -284,6 +351,11 @@
         i = lista.siguiente;
         continue;
       }
+      if (esRampaSola(linea)) {
+        bloques.push(renderInline(linea.trim(), base));
+        i += 1;
+        continue;
+      }
       if (linea.trim().startsWith(">")) {
         const citas = [];
         while (i < lineas.length && lineas[i].trim().startsWith(">")) {
@@ -302,12 +374,17 @@
         !marcaLista(lineas[i]) &&
         !(lineas[i].trim().startsWith("|") && esSeparador(lineas[i + 1] || "")) &&
         !/^\s*([-*_])(\s*\1){2,}\s*$/.test(lineas[i]) &&
-        !lineas[i].trim().startsWith(">")
+        !lineas[i].trim().startsWith(">") &&
+        !esRampaSola(lineas[i])
       ) {
         parrafo.push(lineas[i].trim());
         i += 1;
       }
-      if (parrafo.length) bloques.push("<p>" + renderInline(parrafo.join(" "), base) + "</p>");
+      if (parrafo.length) {
+        const htmlInline = renderInline(parrafo.join(" "), base);
+        if (parrafo.length === 1 && htmlInline.startsWith("<ol")) bloques.push(htmlInline);
+        else bloques.push("<p>" + htmlInline + "</p>");
+      }
     }
     return bloques.join("\n");
   }

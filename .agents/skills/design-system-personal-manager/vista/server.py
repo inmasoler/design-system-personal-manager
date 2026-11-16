@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Vista local de solo lectura para los Markdown de un sistema de diseño.
+"""Vista local de solo lectura para los Markdown publicados de un sistema de diseño.
 
 No crea, modifica ni borra archivos. Sirve la interfaz que vive junto a este
-script y lee la carpeta de documentación que se le indique.
+script y lee solo los documentos de la allowlist dentro de la carpeta indicada.
 """
 
 from __future__ import annotations
@@ -29,34 +29,78 @@ MEDIA_TYPES = {
     ".webp": "image/webp",
 }
 
-# Orden de las secciones conocidas. Cualquier otra carpeta o Markdown de la
-# raíz aparece después, con su propio nombre: la vista no asume un sistema.
+# Solo estas categorías, en este orden. No se crean pestañas para carpetas
+# detectadas ni para secciones sin documentos.
 SECCIONES = (
-    ("componentes", "Componentes"),
     ("foundations", "Foundations"),
     ("tokens", "Tokens"),
+    ("componentes", "Componentes"),
     ("changelog", "Changelog"),
-    ("deuda", "Deuda"),
-    ("pendientes", "Pendientes"),
-    ("reportes", "Reportes"),
-    ("storybook", "Storybook"),
-    ("marca", "Marca"),
+    ("deuda", "Deuda y pendientes"),
     ("comandos", "Comandos"),
-    ("ordenado", "Acopio"),
-    ("clasificado", "Clasificado"),
-    ("raw", "Notas raw"),
+    ("convenciones", "Convenciones"),
+    ("vocabulario", "Vocabulario"),
 )
-SECCION_IDS = {clave for clave, _ in SECCIONES}
+RAIZ_MD = (
+    "changelog.md",
+    "changelog-documentacion.md",
+    "deuda.md",
+    "comandos.md",
+)
+ORDEN_CHANGELOG = {
+    "changelog.md": 0,
+    "changelog-documentacion.md": 1,
+}
 SALTAR_DIRECTORIOS = {".git", "node_modules", "__pycache__"}
 HEADING = re.compile(r"^#\s+(.+?)\s*$")
 
 
-def dentro_de(raiz: Path, candidato: Path) -> Path:
+def normalizar(raiz: Path, relativa: str) -> str:
+    if relativa.startswith(("/", "\\")) or "\\" in relativa:
+        raise PermissionError(relativa)
+    if not relativa:
+        return ""
     raiz_resuelta = raiz.resolve()
-    destino = candidato.resolve()
+    destino = (raiz_resuelta / relativa).resolve()
     if destino != raiz_resuelta and raiz_resuelta not in destino.parents:
         raise PermissionError(destino)
-    return destino
+    return destino.relative_to(raiz_resuelta).as_posix()
+
+
+def _partes_visibles(ruta: str) -> list[str] | None:
+    partes = ruta.split("/")
+    if any(not parte or parte.startswith(".") or parte in SALTAR_DIRECTORIOS for parte in partes):
+        return None
+    return partes
+
+
+def es_md_publicado(ruta: str) -> bool:
+    """Allowlist de Markdown relativo a la raíz documental."""
+    if not ruta.endswith(".md"):
+        return False
+    partes = _partes_visibles(ruta)
+    if partes is None:
+        return False
+    if len(partes) == 1:
+        return partes[0] in RAIZ_MD
+    if partes[0] != "guias":
+        return False
+    if len(partes) == 2:
+        return partes[1] in {"convenciones.md", "vocabulario.md"}
+    if len(partes) == 3 and partes[1] == "componentes":
+        return True
+    if partes[1] != "foundations":
+        return False
+    if len(partes) == 3:
+        return True
+    return len(partes) == 4 and partes[2] == "tokens"
+
+
+def es_asset_publicado(ruta: str) -> bool:
+    """Imágenes y otros archivos de las guías. Los Markdown van por la allowlist."""
+    if not ruta or ruta.endswith(".md") or not ruta.startswith("guias/"):
+        return False
+    return _partes_visibles(ruta) is not None
 
 
 def titulo_de(archivo: Path) -> str:
@@ -77,35 +121,58 @@ def titulo_de(archivo: Path) -> str:
 def seccion_de(ruta: str) -> str:
     partes = ruta.split("/")
     nombre = partes[-1]
-    if ruta in {"changelog.md", "deuda.md", "pendientes.md", "comandos.md"}:
-        return nombre[:-3]
-    if partes[0] == "foundations" and (
-        nombre == "tokens.md" or (len(partes) > 1 and partes[1] == "tokens")
+    if len(partes) == 1 and nombre in {"changelog.md", "changelog-documentacion.md"}:
+        return "changelog"
+    if len(partes) == 1 and nombre == "deuda.md":
+        return "deuda"
+    if len(partes) == 1 and nombre == "comandos.md":
+        return "comandos"
+    if partes == ["guias", "convenciones.md"]:
+        return "convenciones"
+    if partes == ["guias", "vocabulario.md"]:
+        return "vocabulario"
+    if len(partes) >= 2 and partes[0] == "guias" and partes[1] == "componentes":
+        return "componentes"
+    if partes[0] == "guias" and partes[1] == "foundations" and (
+        nombre == "tokens.md" or (len(partes) > 2 and partes[2] == "tokens")
     ):
         return "tokens"
-    if partes[0] in SECCION_IDS:
-        return partes[0]
-    if len(partes) == 1:
-        return nombre[:-3]
-    return partes[0]
+    if len(partes) >= 2 and partes[0] == "guias" and partes[1] == "foundations":
+        return "foundations"
+    raise ValueError(ruta)
 
 
-def etiqueta_de(clave: str) -> str:
-    for identificador, etiqueta in SECCIONES:
-        if identificador == clave:
-            return etiqueta
-    return clave.replace("-", " ")
+def candidatos(raiz: Path) -> list[Path]:
+    hallados: list[Path] = []
+    for nombre in RAIZ_MD:
+        hallados.append(raiz / nombre)
+    guias = raiz / "guias"
+    if not guias.is_dir():
+        return hallados
+    for nombre in ("convenciones.md", "vocabulario.md"):
+        hallados.append(guias / nombre)
+    componentes = guias / "componentes"
+    if componentes.is_dir():
+        hallados.extend(componentes.glob("*.md"))
+    foundations = guias / "foundations"
+    if foundations.is_dir():
+        hallados.extend(foundations.glob("*.md"))
+        tokens = foundations / "tokens"
+        if tokens.is_dir():
+            hallados.extend(tokens.glob("*.md"))
+    return hallados
 
 
 def listar_paginas(raiz: Path) -> list[dict[str, str]]:
     paginas = []
     if not raiz.is_dir():
         return paginas
-    for archivo in sorted(raiz.rglob("*.md")):
-        rel = archivo.relative_to(raiz)
-        if any(parte.startswith(".") or parte in SALTAR_DIRECTORIOS for parte in rel.parts):
+    for archivo in candidatos(raiz):
+        if not archivo.is_file():
             continue
-        ruta = rel.as_posix()
+        ruta = archivo.relative_to(raiz).as_posix()
+        if not es_md_publicado(ruta):
+            continue
         paginas.append(
             {
                 "ruta": ruta,
@@ -122,12 +189,16 @@ def arbol(raiz: Path) -> dict:
         grupos.setdefault(pagina["seccion"], []).append(
             {"ruta": pagina["ruta"], "titulo": pagina["titulo"]}
         )
-    orden = [clave for clave, _ in SECCIONES if clave in grupos]
-    resto = sorted(clave for clave in grupos if clave not in SECCION_IDS)
-    pestanas = [
-        {"id": clave, "titulo": etiqueta_de(clave), "paginas": grupos[clave]}
-        for clave in orden + resto
-    ]
+    pestanas = []
+    for clave, etiqueta in SECCIONES:
+        if clave not in grupos:
+            continue
+        paginas = grupos[clave]
+        if clave == "changelog":
+            paginas = sorted(paginas, key=lambda pagina: (ORDEN_CHANGELOG.get(pagina["ruta"], 99), pagina["ruta"]))
+        else:
+            paginas = sorted(paginas, key=lambda pagina: pagina["ruta"])
+        pestanas.append({"id": clave, "titulo": etiqueta, "paginas": paginas})
     return {"raiz": raiz.name, "pestanas": pestanas}
 
 
@@ -165,21 +236,26 @@ def hacer_manejador(raiz: Path):
 
         def _enviar_pagina(self, query: str) -> None:
             relativa = parse_qs(query).get("ruta", [""])[0]
-            if not relativa.endswith(".md"):
+            normal = normalizar(raiz, relativa)
+            if not es_md_publicado(normal):
                 self.send_error(404)
                 return
-            archivo = dentro_de(raiz, raiz / relativa)
+            archivo = raiz / normal
             if not archivo.is_file():
                 self.send_error(404)
                 return
             texto = archivo.read_text(encoding="utf-8", errors="replace")[:MAX_BYTES]
             self._enviar_json(
-                {"ruta": relativa, "titulo": titulo_de(archivo), "markdown": texto}
+                {"ruta": normal, "titulo": titulo_de(archivo), "markdown": texto}
             )
 
         def _enviar_documento(self, relativa: str) -> None:
-            archivo = dentro_de(raiz, raiz / relativa)
-            if not archivo.is_file() or archivo.suffix.lower() == ".md":
+            normal = normalizar(raiz, relativa)
+            if not es_asset_publicado(normal):
+                self.send_error(404)
+                return
+            archivo = raiz / normal
+            if not archivo.is_file():
                 self.send_error(404)
                 return
             self._enviar_archivo(archivo)

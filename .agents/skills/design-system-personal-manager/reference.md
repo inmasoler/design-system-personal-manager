@@ -6,12 +6,13 @@ Este archivo define la estructura exacta que deben seguir todos los documentos g
 
 ## Reglas Generales de Aplicación
 
-1. **Fidelidad Absoluta**: Nunca inventar valores, propiedades, tokens, decisiones ni datos ficticios. En el acopio fiel (`ordenado/specs/` y `ordenado/foundations/`), si un campo no aparece en las notas raw, debe indicarse explícitamente como `No consta en las notas raw`. En las páginas publicadas (`componentes/` y `foundations/`), no se escribe ese marcador dentro de la sección: el apartado se omite y el hueco se resume en **Información pendiente**.
+1. **Fidelidad Absoluta**: Nunca inventar valores, propiedades, tokens, decisiones ni datos ficticios. En el acopio fiel (`ordenado/specs/` y `ordenado/foundations/`), si un campo no aparece en las notas raw, debe indicarse explícitamente como `No consta en las notas raw`. En las páginas publicadas (`guias/componentes/`, `guias/foundations/` y `guias/foundations/tokens/`), no se escribe ese marcador dentro de la sección: el apartado se omite y el hueco se resume en **Información pendiente**. Un hexadecimal que consta se puede dejar como `{{swatch:#abc}}`, `{{swatch:#aabbcc}}` o `{{ramp:01=#aabbcc;02=#ddeeff}}`: solo 3 o 6 dígitos, y pasos de 2 o 3 dígitos. No se inventan colores ni pasos.
 2. **Omisión de Secciones Vacías**: En el **Reporte Diario** y en el **Changelog**, una sección SOLO se incluye si ese día existen notas correspondientes a esa área o tipo de cambio. No dejar secciones vacías. En la referencia de tokens se omite igual cualquier grupo vacío.
 3. **Gestión de Restos**: Todo fragmento de información que no encaje de forma clara en las secciones predefinidas debe colocarse en un apartado final de **Resto / Sin clasificar**. Al finalizar el comando, el agente debe señalarlo explícitamente y preguntar al usuario dónde desea clasificarlo.
 4. **Voz de Marca**: Si existe `docs/sistema-diseno/marca/voz.md`, se aplican sus directrices a títulos, conectores y mensajes sin alterar la veracidad del contenido técnico. Si no existe, se emplea un tono profesional, claro y neutro.
-5. **Convenciones del Proyecto**: Si existe `docs/sistema-diseno/foundations/convenciones.md`, las plantillas 10 a 12 se rellenan con sus modos, clasificación de grupos, formato de valores y prefijo de pendientes. Ese fichero lo escribe el usuario, o el agente a petición suya con datos confirmados por él. La skill lo lee y no lo deduce. No se copian nombres, modos ni prefijos de otra empresa o de otro design system.
-6. **Valores por defecto sin convenciones**: Si `convenciones.md` no existe, no se inventa uno durante el comando. Se aplican estos defectos, y solo a la foundation o al área pedida:
+5. **Convenciones del Proyecto**: Las plantillas 10 a 12 se rellenan con los modos, la clasificación de grupos, el formato de valores y el prefijo de pendientes del archivo de convenciones localizado. Se busca, en este orden, `guias/foundations/convenciones.md`, un único `guias/foundations/<dígitos>-convenciones.md`, `guias/convenciones.md` y las mismas formas bajo `foundations/` sin `guias/`. Cuando estas plantillas dicen `convenciones.md`, se refieren a ese archivo. Lo escribe el usuario, o el agente a petición suya con datos confirmados por él. La skill lo lee y no lo deduce. No se copian nombres, modos ni prefijos de otra empresa o de otro design system.
+6. **Slugs:** Se respetan los slugs publicados en las convenciones. El prefijo numérico de una guía (`02-colores.md`) no pasa al acopio (`ordenado/foundations/colores.md`) ni a la referencia de tokens (`guias/foundations/tokens/colores.md`).
+7. **Valores por defecto sin convenciones**: Si no se localiza archivo de convenciones, no se inventa uno durante el comando. Se aplican estos defectos, y solo a la foundation o al área pedida:
    - No hay lista cerrada de foundations, áreas ni nombres de token.
    - Modos: solo los que consten en las notas o en el export. Si no hay, la referencia usa la tabla sin columnas de modo.
    - Capas: primitivos, semánticos de sistema, componente y dominio. Los primitivos no se consumen directamente en producto.
@@ -147,7 +148,7 @@ Este documento consolida la deuda técnica, inconsistencias y tareas pendientes 
 ## 4. Plantilla: Spec fiel del componente
 
 **Ruta de destino:** `docs/sistema-diseno/ordenado/specs/<slug-componente>.md`  
-**Regla:** Este archivo junta, sin redactar para publicación, todo lo que las notas dicen del componente. El slug se toma del nombre en minúsculas y guiones (ej. `button-action.md`). Si un campo no está en las notas raw, colocar `No consta en las notas raw`. No escribir esta spec en `componentes/`.
+**Regla:** Este archivo junta, sin redactar para publicación, todo lo que las notas dicen del componente. El slug se toma del nombre en minúsculas y guiones (ej. `button-action.md`). Si un campo no está en las notas raw, colocar `No consta en las notas raw`. No escribir esta spec en `guias/componentes/`.
 
 ```markdown
 # Spec: [Nombre del Componente]
@@ -233,7 +234,7 @@ Este documento consolida la deuda técnica, inconsistencias y tareas pendientes 
 
 ## 5. Plantilla: Guía del componente
 
-**Ruta de destino:** `docs/sistema-diseno/componentes/<slug-componente>.md`  
+**Ruta de destino:** `docs/sistema-diseno/guias/componentes/<slug-componente>.md`  
 **Fuente única:** `docs/sistema-diseno/ordenado/specs/<slug>.md`. Si la spec no existe, no generar la guía.  
 **Idioma:** español. Los títulos de sección se escriben como en esta plantilla.  
 **Regla de lectura:** se redacta como la página de un componente en un design system. Solo entran secciones con datos reales en la spec. Un apartado entero en `No consta en las notas raw` no se publica. Los huecos se resumen al final, sin repetir el marcador dentro del cuerpo.
@@ -327,14 +328,14 @@ Este documento consolida la deuda técnica, inconsistencias y tareas pendientes 
 
 **Ruta de destino:** `docs/sistema-diseno/storybook/<slug-componente>.md`  
 **Fuente:** la spec fiel en `docs/sistema-diseno/ordenado/specs/<slug>.md`.  
-**Finalidad:** Contexto para crear `.stories.tsx` y el sample interactivo. La guía de uso, las buenas prácticas y la referencia de API viven en `componentes/` y no se reescriben aquí.
+**Finalidad:** Contexto para crear `.stories.tsx` y el sample interactivo. La guía de uso, las buenas prácticas y la referencia de API viven en `guias/componentes/` y no se reescriben aquí.
 
 ```markdown
 # Contexto de Storybook: [Nombre del componente]
 
 > Borrador para montar historias y controles. Los campos marcados como `[No consta en notas / Validar con código]` deben contrastarse con el código del componente.
 >
-> Guía publicada: `docs/sistema-diseno/componentes/<slug>.md`
+> Guía publicada: `docs/sistema-diseno/guias/componentes/<slug>.md`
 
 ## Meta
 - **Title:** `Componentes/[Categoría]/[Nombre]`
@@ -468,7 +469,7 @@ export const Base: Story = {
 ## 10. Plantilla: Acopio fiel de la foundation
 
 **Ruta de destino:** `docs/sistema-diseno/ordenado/foundations/<slug>.md`  
-**Regla de lectura:** junta todo lo que consta de la foundation, con el detalle íntegro. Aquí sí se conservan mediciones completas, notaciones de origen y procedencia. Todo campo sin datos queda como `No consta en las notas raw`. El nombre de la foundation y el slug salen de las fuentes o de `convenciones.md`, no de una lista fija.
+**Regla de lectura:** junta todo lo que consta de la foundation, con el detalle íntegro. Aquí sí se conservan mediciones completas, notaciones de origen y procedencia. Todo campo sin datos queda como `No consta en las notas raw`. El nombre de la foundation y el slug salen de las fuentes o del archivo de convenciones localizado, no de una lista fija. El slug no incluye el prefijo numérico de la guía publicada.
 
 ```markdown
 # Acopio: [Nombre de la foundation]
@@ -525,7 +526,8 @@ export const Base: Story = {
 
 ## 11. Plantilla: Guía de foundation
 
-**Ruta de destino:** `docs/sistema-diseno/foundations/<slug>.md`  
+**Ruta de destino:** `docs/sistema-diseno/guias/foundations/<guia>.md`  
+**Nombre de archivo:** el slug, o el archivo con prefijo numérico que ya exista para ese slug (`02-colores.md`). No se inventa el prefijo. El acopio que se lee sigue en `ordenado/foundations/<slug>.md`.  
 **Fuente única:** `docs/sistema-diseno/ordenado/foundations/<slug>.md`. Si el acopio no existe, no generar la guía.  
 **Idioma:** español. Los títulos de sección se escriben como en esta plantilla y en este orden.  
 **Regla de lectura:** responde a qué usar, cuándo y por qué. Solo entran secciones con datos reales en el acopio. No contiene tablas de valores ni frases sobre la procedencia del contenido. Los huecos se resumen al final, una sola vez. Los modos, roles y grupos son los que consten, no un esquema de un sistema concreto.
@@ -592,16 +594,16 @@ El detalle de las mediciones está en [el acopio o registro de decisiones].
 - [Registro de decisiones]
 
 ## Información pendiente
-- [[ID](../pendientes.md#id): hueco que un lector de la guía necesita saber que falta]
+- [[ID](../../pendientes.md#id): hueco que un lector de la guía necesita saber que falta]
 ```
 
 ---
 
 ## 12. Plantilla: Referencia de tokens
 
-**Ruta de destino:** `docs/sistema-diseno/foundations/tokens/<area>.md`  
+**Ruta de destino:** `docs/sistema-diseno/guias/foundations/tokens/<area>.md`  
 **Fuente:** exports de tokens del área (solo lectura).  
-**Regla de lectura:** responde a cómo se llama cada token y cuánto vale. Solo tokens primitivos y semánticos de sistema, salvo que `convenciones.md` clasifique de otro modo. Los tokens de componente van a la spec y la guía de su componente. Valor resuelto en la celda y alias entre paréntesis. El área y los nombres de modo son los del export o de las convenciones.
+**Regla de lectura:** responde a cómo se llama cada token y cuánto vale. Solo tokens primitivos y semánticos de sistema, salvo que el archivo de convenciones localizado clasifique de otro modo. Los tokens de componente van a la spec y la guía de su componente. Valor resuelto en la celda y alias entre paréntesis. El área es el slug, sin prefijo numérico, y los nombres de modo son los del export o de las convenciones. Si el valor es un hexadecimal que consta, la celda Muestra puede llevar `{{swatch:#abc}}` o `{{swatch:#aabbcc}}`. Una escala que consta se escribe `{{ramp:01=#aabbcc;02=#ddeeff}}`.
 
 ````markdown
 # Tokens — [Área]
@@ -640,7 +642,7 @@ El detalle de las mediciones está en [el acopio o registro de decisiones].
 <!-- Solo si existen tokens no válidos en el export. No se listan en las tablas anteriores. -->
 | Token | Motivo | Pendiente |
 | :--- | :--- | :--- |
-| `grupo.rol` | [Motivo breve] | [ID](../../pendientes.md#id) |
+| `grupo.rol` | [Motivo breve] | [ID](../../../pendientes.md#id) |
 
 ## Tokens reubicados
 <!-- Solo si el export del área contiene tokens de componente o de dominio. -->
@@ -649,17 +651,17 @@ El detalle de las mediciones está en [el acopio o registro de decisiones].
 | `grupo` | [Enlace a la guía del componente o del dominio] |
 
 ## Información pendiente
-- [[ID](../../pendientes.md#id): hueco que afecta a esta referencia]
+- [[ID](../../../pendientes.md#id): hueco que afecta a esta referencia]
 ````
 
-Si `convenciones.md` permite consumir primitivos en producto, no se escribe la cita de esta sección.
+Si el archivo de convenciones localizado permite consumir primitivos en producto, no se escribe la cita de esta sección.
 
 ---
 
 ## 13. Plantilla: Registro de pendientes
 
 **Ruta de destino:** `docs/sistema-diseno/pendientes.md`  
-**Modo de actualización:** añadir entradas con ID secuencial. No reutilizar, renumerar ni borrar. Un pendiente resuelto pasa a la sección **Resueltos** con su fecha. El prefijo sale de `convenciones.md`; si no hay convenciones, es `PEND`. Los problemas del sistema no se anotan aquí: van a `deuda.md`.
+**Modo de actualización:** añadir entradas con ID secuencial. No reutilizar, renumerar ni borrar. Un pendiente resuelto pasa a la sección **Resueltos** con su fecha. El prefijo sale del archivo de convenciones localizado; si no hay convenciones, es `PEND`. Los problemas del sistema no se anotan aquí: van a `deuda.md`.
 
 ```markdown
 # Registro de Pendientes — Sistema de Diseño
@@ -692,8 +694,8 @@ Información que falta por aportar para completar la documentación. Los problem
 
 ## 14. Plantilla: Convenciones del proyecto
 
-**Ruta de destino:** `docs/sistema-diseno/foundations/convenciones.md`  
-**Quién lo escribe:** el usuario, o el agente a petición suya con datos confirmados por él. La skill lo lee, no lo deduce. Todas las celdas son del proyecto en curso. Ningún ejemplo de esta plantilla se copia como si fuera un dato real.
+**Ruta de destino:** el archivo localizado. Si no existe ninguno, `docs/sistema-diseno/guias/foundations/convenciones.md`. No se inventa un prefijo numérico; si el proyecto ya usa `01-convenciones.md`, se actualiza ese archivo.  
+**Quién lo escribe:** el usuario, o el agente a petición suya con datos confirmados por él. La skill lo lee, no lo deduce. Todas las celdas son del proyecto en curso. Ningún ejemplo de esta plantilla se copia como si fuera un dato real. El slug de la tabla es el que usan el acopio y la referencia de tokens, sin el prefijo numérico del nombre de la guía.
 
 ```markdown
 # Convenciones de Foundations — [Nombre del sistema]

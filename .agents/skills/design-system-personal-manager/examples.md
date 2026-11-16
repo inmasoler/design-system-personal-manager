@@ -159,7 +159,7 @@ Se incorporó la variante ghost al componente Button y se ajustó el espaciado t
 ## 5. Resultado del Comando `actualizar-spec` (Button)
 
 **Archivo actualizado/creado en `docs/sistema-diseno/ordenado/specs/button.md`:**  
-*(Acopio fiel. Los campos no documentados quedan como `No consta en las notas raw`. No se escribe en `componentes/`.)*
+*(Acopio fiel. Los campos no documentados quedan como `No consta en las notas raw`. No se escribe en `guias/componentes/`.)*
 
 ```markdown
 # Spec: Button
@@ -248,7 +248,7 @@ No consta en las notas raw.
 
 ## 6. Resultado del Comando `escribir-guia` (Button)
 
-**Archivo creado en `docs/sistema-diseno/componentes/button.md`:**  
+**Archivo creado en `docs/sistema-diseno/guias/componentes/button.md`:**  
 *(Solo lo que la spec tiene. Los huecos no se repiten dentro de cada sección.)*
 
 ```markdown
@@ -366,7 +366,7 @@ el contraste de texto sobre ese fondo no está medido.
 | Fondo de página | Fondo de página | Texto | `color.bg.default` |
 
 ## Información pendiente
-- [PEND-01](../pendientes.md#pend-01): contraste del texto sobre `color.bg.default`.
+- [PEND-01](../../pendientes.md#pend-01): contraste del texto sobre `color.bg.default`.
 ```
 
 `referencia-tokens color`, con un export que trae ese único token y ningún modo, escribe una tabla de una columna. El token no se duplica en Primitivos si el export lo trae como semántico. No se inventa una columna de modo alternativo.

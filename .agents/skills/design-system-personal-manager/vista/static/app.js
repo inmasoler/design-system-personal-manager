@@ -1,9 +1,15 @@
 (function () {
   const pestanasEl = document.getElementById("pestanas");
+  const subpestanasEl = document.getElementById("subpestanas");
   const indiceEl = document.getElementById("indice");
   const lecturaEl = document.getElementById("lectura");
   const raizEl = document.getElementById("raiz");
   const marcoEl = document.querySelector(".marco");
+  const ETIQUETAS_HISTORIAL = {
+    "changelog.md": "Sistema de diseño",
+    "changelog-documentacion.md": "Documentación y gestor",
+  };
+  const ORDEN_HISTORIAL = ["changelog.md", "changelog-documentacion.md"];
   let arbol = { pestanas: [] };
 
   function destinoActual() {
@@ -27,11 +33,34 @@
     return pagina ? pagina.id : (arbol.pestanas[0] && arbol.pestanas[0].id);
   }
 
+  function moverFoco(contenedor, evento) {
+    const teclas = ["ArrowRight", "ArrowLeft", "Home", "End"];
+    if (teclas.indexOf(evento.key) === -1) return;
+    const botones = Array.prototype.slice.call(contenedor.querySelectorAll('[role="tab"]'));
+    const actual = botones.indexOf(document.activeElement);
+    if (actual === -1 || !botones.length) return;
+    evento.preventDefault();
+    let siguiente = actual;
+    if (evento.key === "ArrowRight") siguiente = (actual + 1) % botones.length;
+    if (evento.key === "ArrowLeft") siguiente = (actual - 1 + botones.length) % botones.length;
+    if (evento.key === "Home") siguiente = 0;
+    if (evento.key === "End") siguiente = botones.length - 1;
+    botones[siguiente].focus();
+    botones[siguiente].click();
+  }
+
+  pestanasEl.addEventListener("keydown", function (evento) { moverFoco(pestanasEl, evento); });
+  subpestanasEl.addEventListener("keydown", function (evento) { moverFoco(subpestanasEl, evento); });
+
   function pintarPestanas(activa) {
+    const teniaFoco = pestanasEl.contains(document.activeElement);
     pestanasEl.replaceChildren();
+    pestanasEl.setAttribute("role", "tablist");
     arbol.pestanas.forEach(function (pestana) {
       const boton = document.createElement("button");
       boton.type = "button";
+      boton.setAttribute("role", "tab");
+      boton.setAttribute("aria-controls", "lectura");
       boton.textContent = pestana.titulo;
       boton.setAttribute("aria-selected", pestana.id === activa ? "true" : "false");
       boton.addEventListener("click", function () {
@@ -39,10 +68,46 @@
       });
       pestanasEl.appendChild(boton);
     });
+    if (teniaFoco) {
+      const seleccionado = pestanasEl.querySelector('[aria-selected="true"]');
+      if (seleccionado) seleccionado.focus();
+    }
+  }
+
+  function pintarSubpestanas(pestana, ruta) {
+    const teniaFoco = subpestanasEl.contains(document.activeElement);
+    subpestanasEl.replaceChildren();
+    if (!pestana || pestana.id !== "changelog") {
+      subpestanasEl.hidden = true;
+      return;
+    }
+    const paginas = ORDEN_HISTORIAL
+      .map(function (id) { return pestana.paginas.find(function (pagina) { return pagina.ruta === id; }); })
+      .filter(Boolean);
+    if (!paginas.length) {
+      subpestanasEl.hidden = true;
+      return;
+    }
+    subpestanasEl.hidden = false;
+    subpestanasEl.setAttribute("role", "tablist");
+    paginas.forEach(function (pagina) {
+      const boton = document.createElement("button");
+      boton.type = "button";
+      boton.setAttribute("role", "tab");
+      boton.setAttribute("aria-controls", "lectura");
+      boton.textContent = ETIQUETAS_HISTORIAL[pagina.ruta];
+      boton.setAttribute("aria-selected", pagina.ruta === ruta ? "true" : "false");
+      boton.addEventListener("click", function () { ir(pagina.ruta); });
+      subpestanasEl.appendChild(boton);
+    });
+    if (teniaFoco) {
+      const seleccionado = subpestanasEl.querySelector('[aria-selected="true"]');
+      if (seleccionado) seleccionado.focus();
+    }
   }
 
   function pintarIndice(pestana, ruta) {
-    if (!pestana || pestana.paginas.length < 2) {
+    if (!pestana || pestana.id === "changelog" || pestana.paginas.length < 2) {
       indiceEl.hidden = true;
       indiceEl.replaceChildren();
       marcoEl.classList.add("sin-indice");
@@ -75,9 +140,11 @@
   async function pintar() {
     if (!arbol.pestanas.length) {
       pestanasEl.replaceChildren();
+      subpestanasEl.hidden = true;
+      subpestanasEl.replaceChildren();
       indiceEl.hidden = true;
       marcoEl.classList.add("sin-indice");
-      mensaje("Esta carpeta todavía no tiene Markdown.");
+      mensaje("Esta carpeta todavía no tiene Markdown publicado.");
       return;
     }
     const actual = destinoActual();
@@ -89,6 +156,7 @@
     const seccion = seccionDe(ruta);
     const pestana = arbol.pestanas.find(function (item) { return item.id === seccion; });
     pintarPestanas(seccion);
+    pintarSubpestanas(pestana, ruta);
     pintarIndice(pestana, ruta);
     const respuesta = await fetch("/api/pagina?ruta=" + encodeURIComponent(ruta));
     if (!respuesta.ok) {
